@@ -6,443 +6,235 @@
 <title>NFL Fantasy DB</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-:root {
-  --bg:       #08101A;
-  --surf:     #0F1B27;
-  --surf-2:   #172434;
-  --border:   #1A2B3C;
-  --border-2: #243A50;
-
-  --text:   #DDE6EF;
-  --text-2: #7E9BB5;
-  --text-3: #3D5670;
-
-  --orange: #F97316;
-  --orange-dim: rgba(249,115,22,0.1);
-
-  --qb:  #E05252;
-  --rb:  #3B82F6;
-  --wr:  #22C55E;
-  --te:  #F59E0B;
-  --k:   #A78BFA;
-  --def: #64748B;
-
-  --tag-g-bg:   #0E3321; --tag-g-tx: #4ADE80;
-  --tag-r-bg:   #3B0A0A; --tag-r-tx: #F87171;
-  --tag-b-bg:   #0D2545; --tag-b-tx: #60A5FA;
-  --tag-n-bg:   #111F2C; --tag-n-tx: #7E9BB5;
-
-  --radius: 10px;
-  --font: 'Inter', system-ui, sans-serif;
+:root{
+  --bg:#08101A;--surf:#0F1B27;--surf-2:#172434;--surf-3:#1E2F42;
+  --border:#1A2B3C;--bord-2:#243A50;
+  --text:#DDE6EF;--text-2:#7E9BB5;--text-3:#3D5670;
+  --orange:#F97316;
+  --qb:#E05252;--rb:#3B82F6;--wr:#22C55E;--te:#F59E0B;--k:#A78BFA;--def:#64748B;
+  --tg-bg:#0E3321;--tg-tx:#4ADE80;
+  --tr-bg:#3B0A0A;--tr-tx:#F87171;
+  --tb-bg:#0D2545;--tb-tx:#60A5FA;
+  --tn-bg:#111F2C;--tn-tx:#7E9BB5;
+  --radius:10px;--font:'Inter',system-ui,sans-serif;
 }
+body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15px;line-height:1.5;min-height:100vh}
 
-body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 15px;
-  line-height: 1.5;
-  min-height: 100vh;
+/* HEADER */
+.hdr{padding:24px 20px 0;max-width:1440px;margin:0 auto}
+.hdr-row{display:flex;align-items:baseline;gap:16px;margin-bottom:18px}
+.logo{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:.04em;line-height:1;flex-shrink:0}
+.logo span{color:var(--orange)}
+.tagline{font-size:12px;color:var(--text-3);letter-spacing:.08em;text-transform:uppercase;padding-bottom:4px}
+.cnt{margin-left:auto;font-size:12px;color:var(--text-3);white-space:nowrap;padding-bottom:4px}
+.search-wrap{position:relative;margin-bottom:4px}
+.search-ico{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-3);pointer-events:none}
+.search-input{width:100%;padding:12px 16px 12px 44px;background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);color:var(--text);font-family:var(--font);font-size:15px;outline:none;transition:border-color .18s}
+.search-input::placeholder{color:var(--text-3)}
+.search-input:focus{border-color:var(--orange)}
+
+/* CONTROLS */
+.ctrl-outer{position:sticky;top:0;z-index:20;background:var(--bg)}
+.ctrl-inner{max-width:1440px;margin:0 auto;padding:10px 20px;display:flex;flex-direction:column;gap:8px;border-bottom:1px solid var(--border)}
+.pos-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.pos-btn{padding:5px 14px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text-2);font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .15s}
+.pos-btn:hover{border-color:var(--bord-2);color:var(--text)}
+.pos-btn.active{color:#fff;border-color:transparent}
+.pos-btn.active[data-pos="ALL"]{background:var(--orange)}
+.pos-btn.active[data-pos="QB"]{background:var(--qb)}
+.pos-btn.active[data-pos="RB"]{background:var(--rb)}
+.pos-btn.active[data-pos="WR"]{background:var(--wr)}
+.pos-btn.active[data-pos="TE"]{background:var(--te)}
+.pos-btn.active[data-pos="K"] {background:var(--k)}
+.pos-btn.active[data-pos="DEF"]{background:var(--def)}
+.flt-cnt{margin-left:auto;font-size:12px;color:var(--text-3)}
+.tog-row{display:flex;gap:20px;flex-wrap:wrap;align-items:center}
+.tog-lbl{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--text-2);cursor:pointer;user-select:none}
+.tog-lbl input[type=checkbox]{width:14px;height:14px;accent-color:var(--orange);cursor:pointer}
+.sort-sel{background:var(--surf);border:1px solid var(--border);border-radius:6px;color:var(--text-2);font-family:var(--font);font-size:12px;padding:3px 8px;cursor:pointer;outline:none}
+
+/* TAG FILTER */
+.tf-outer{overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
+.tf-outer::-webkit-scrollbar{display:none}
+.tf-row{max-width:1440px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.tf-lbl{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;flex-shrink:0;margin-right:2px}
+#tf-pills{display:inline-flex;gap:6px;flex-wrap:nowrap}
+.tf-pill{font-size:10px;font-weight:700;letter-spacing:.07em;padding:3px 9px;border-radius:4px;text-transform:uppercase;cursor:pointer;border:1.5px solid transparent;display:inline-flex;align-items:center;gap:4px;transition:all .12s;flex-shrink:0}
+.tf-pill:hover{filter:brightness(1.2)}
+.tf-pill.pos{background:var(--tg-bg);color:var(--tg-tx);border-color:var(--tg-bg)}
+.tf-pill.neg{background:var(--tr-bg);color:var(--tr-tx);border-color:var(--tr-bg)}
+.tf-pill.info{background:var(--tb-bg);color:var(--tb-tx);border-color:var(--tb-bg)}
+.tf-pill.neu{background:var(--tn-bg);color:var(--tn-tx);border-color:var(--tn-bg)}
+.tf-pill.on.pos{border-color:var(--tg-tx)}.tf-pill.on.neg{border-color:var(--tr-tx)}
+.tf-pill.on.info{border-color:var(--tb-tx)}.tf-pill.on.neu{border-color:var(--tn-tx)}
+.tf-n{font-size:9px;opacity:.65;font-weight:600}
+.tf-reset{font-size:11px;color:var(--text-3);background:transparent;border:1px solid var(--border);border-radius:4px;padding:3px 10px;cursor:pointer;flex-shrink:0;transition:all .12s;margin-left:4px}
+.tf-reset:hover{color:var(--text);border-color:var(--bord-2)}
+
+/* MAIN */
+main{max-width:1440px;margin:0 auto;padding:20px}
+.player-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+
+/* HEADSHOTS */
+.hs-wrap{position:relative;flex-shrink:0}
+.hs-inner{width:50px;height:50px;border-radius:50%;overflow:hidden;position:relative;box-shadow:0 0 0 2px var(--c,#64748B)}
+.hs-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;color:#fff;background:var(--c,#64748B);letter-spacing:.02em}
+.hs-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center}
+.hs-badge{position:absolute;bottom:-3px;right:-7px;font-size:9px;font-weight:700;letter-spacing:.04em;padding:1px 5px;border-radius:3px;color:#fff;background:var(--c,#64748B);line-height:1.6;z-index:1}
+
+/* CARDS */
+.player-card{background:var(--surf);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;display:flex;flex-direction:column;gap:9px;transition:border-color .18s,transform .15s;cursor:pointer}
+.player-card:hover{border-color:var(--bord-2);transform:translateY(-1px)}
+.card-top{display:flex;align-items:center;gap:12px}
+.card-info{flex:1;min-width:0}
+.player-name{font-size:15px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player-sub{font-size:12px;color:var(--text-2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.team-abbr{color:var(--orange);font-weight:600}
+.depth-row{display:flex;align-items:center;gap:8px}
+.depth-key{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em}
+.depth-val{font-size:13px;font-weight:600;color:var(--text-2)}
+.depth-val.d1{color:#4ADE80}.depth-val.d2{color:#60A5FA}
+.meta-row{display:flex;flex-wrap:wrap;gap:12px}
+.meta-item{font-size:12px;color:var(--text-3)}
+.meta-item strong{color:var(--text-2);font-weight:500}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:2px}
+.tag{font-size:10px;font-weight:700;letter-spacing:.07em;padding:2px 7px;border-radius:4px;text-transform:uppercase}
+.tag.pos{background:var(--tg-bg);color:var(--tg-tx)}
+.tag.neg{background:var(--tr-bg);color:var(--tr-tx)}
+.tag.info{background:var(--tb-bg);color:var(--tb-tx)}
+.tag.neu{background:var(--tn-bg);color:var(--tn-tx)}
+
+/* MADDEN CARD BADGE */
+.card-ovr{font-size:11px;font-weight:700;color:#fff;background:var(--c,#64748B);border-radius:4px;padding:2px 6px;flex-shrink:0;margin-left:auto;opacity:.9}
+
+/* LOADING / EMPTY */
+.loading{padding:80px 20px;text-align:center;color:var(--text-2)}
+.spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--orange);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 16px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-sub{font-size:13px;color:var(--text-3);margin-top:6px}
+.empty{padding:80px 20px;text-align:center}
+.empty h3{font-size:17px;color:var(--text-2);margin-bottom:8px}
+.empty p{font-size:14px;color:var(--text-3)}
+.lm-wrap{text-align:center;padding:28px 0 8px}
+.lm-btn{padding:10px 32px;background:transparent;border:1px solid var(--bord-2);border-radius:var(--radius);color:var(--text-2);font-family:var(--font);font-size:13px;cursor:pointer;transition:all .15s}
+.lm-btn:hover{border-color:var(--orange);color:var(--text)}
+
+/* DETAIL PANEL */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:90;backdrop-filter:blur(2px)}
+.overlay.open{display:block}
+.detail-panel{position:fixed;right:-420px;top:0;width:400px;height:100vh;background:var(--surf);border-left:1px solid var(--border);z-index:91;overflow-y:auto;transition:right .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.detail-panel.open{right:0}
+.dp-close{position:sticky;top:0;z-index:1;background:var(--surf);border-bottom:1px solid var(--border);padding:14px 18px;display:flex;align-items:center;justify-content:space-between}
+.dp-close-btn{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-2);font-family:var(--font);font-size:12px;padding:5px 12px;cursor:pointer;transition:all .15s}
+.dp-close-btn:hover{border-color:var(--bord-2);color:var(--text)}
+.dp-close-title{font-size:12px;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em}
+.dp-body{padding:20px;display:flex;flex-direction:column;gap:20px;flex:1}
+
+/* Detail photo */
+.dp-photo-outer{position:relative;flex-shrink:0}
+.dp-photo-ring{width:76px;height:76px;border-radius:50%;overflow:hidden;position:relative;box-shadow:0 0 0 2.5px var(--c,#64748B)}
+.dp-photo-fallback{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:600;color:#fff;background:var(--c,#64748B)}
+.dp-photo-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center}
+
+/* Detail sections */
+.dp-hero{display:flex;align-items:flex-start;gap:16px}
+.dp-name{font-size:22px;font-weight:600;line-height:1.15;color:var(--text)}
+.dp-team-line{font-size:14px;color:var(--text-2);margin-top:4px}
+.dp-section{border-top:1px solid var(--border);padding-top:16px}
+.dp-sec-title{font-size:11px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;color:var(--text-3);margin-bottom:12px}
+.dp-grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.dp-stat{display:flex;flex-direction:column;gap:2px}
+.dp-stat-val{font-size:16px;font-weight:600;color:var(--text)}
+.dp-stat-key{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em}
+.dp-tags{display:flex;flex-direction:column;gap:8px}
+.dp-tag-row{display:flex;align-items:flex-start;gap:10px}
+.dp-tag-chip{font-size:10px;font-weight:700;letter-spacing:.07em;padding:3px 8px;border-radius:4px;text-transform:uppercase;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.dp-tag-chip.pos{background:var(--tg-bg);color:var(--tg-tx)}
+.dp-tag-chip.neg{background:var(--tr-bg);color:var(--tr-tx)}
+.dp-tag-chip.info{background:var(--tb-bg);color:var(--tb-tx)}
+.dp-tag-chip.neu{background:var(--tn-bg);color:var(--tn-tx)}
+.dp-tag-desc{font-size:13px;color:var(--text-2);line-height:1.4}
+
+/* Injury section */
+.dp-injury{border-color:rgba(248,113,113,.2);background:rgba(59,10,10,.25);border-radius:8px;padding:12px 14px;border:1px solid rgba(248,113,113,.12)}
+.dp-injury .dp-sec-title{border:none;margin-bottom:8px}
+.dp-inj-row{display:flex;gap:12px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.04);font-size:13px}
+.dp-inj-row:last-child{border-bottom:none}
+.dp-inj-key{color:var(--text-3);width:80px;flex-shrink:0;text-transform:capitalize}
+.dp-inj-val{color:var(--text-2);flex:1}
+
+/* Madden ratings in panel */
+.dp-madden-header{display:flex;align-items:center;gap:14px;margin-bottom:14px}
+.dp-ovr-badge{width:54px;height:54px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:700;color:#fff;flex-shrink:0;border:2px solid rgba(255,255,255,.15)}
+.dp-ovr-info{flex:1}
+.dp-ovr-label{font-size:16px;font-weight:600;color:var(--text)}
+.dp-ovr-src{font-size:11px;color:var(--text-3);margin-top:2px}
+.mr-row{display:flex;align-items:center;gap:8px;margin-bottom:6px}
+.mr-lbl{font-size:11px;color:var(--text-3);width:110px;flex-shrink:0}
+.mr-bar-bg{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.mr-bar{height:100%;border-radius:3px;transition:width .4s ease}
+.mr-val{font-size:12px;font-weight:600;width:26px;text-align:right;flex-shrink:0}
+
+/* Placeholder */
+.dp-placeholder{background:var(--surf-2);border:1px solid var(--border);border-radius:8px;padding:14px 16px}
+.dp-ph-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+
+/* VIEW TOGGLE */
+.view-toggle{display:flex;gap:4px;margin-left:auto}
+.view-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:6px;background:transparent;cursor:pointer;color:var(--text-3);transition:all .15s}
+.view-btn.active{background:var(--surf-2);border-color:var(--bord-2);color:var(--text)}
+.view-btn:hover{border-color:var(--bord-2);color:var(--text)}
+
+/* LIST VIEW */
+.player-list{display:flex;flex-direction:column;gap:2px}
+.player-row{background:var(--surf);border:1px solid var(--border);border-radius:8px;padding:9px 14px;display:flex;align-items:center;gap:10px;cursor:pointer;transition:border-color .15s}
+.player-row:hover{border-color:var(--bord-2)}
+.pr-hs{position:relative;flex-shrink:0}
+.pr-hs-inner{width:36px;height:36px;border-radius:50%;overflow:hidden;position:relative;box-shadow:0 0 0 2px var(--c,#64748B)}
+.pr-hs-fb{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;background:var(--c,#64748B)}
+.pr-hs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center}
+.pr-pos{font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 5px;border-radius:3px;color:#fff;flex-shrink:0}
+.pr-info{flex:1;min-width:0}
+.pr-name{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr-sub{font-size:11px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr-ovr{font-size:15px;font-weight:700;width:36px;text-align:center;flex-shrink:0}
+.pr-depth{font-size:12px;font-weight:600;color:var(--text-2);width:46px;flex-shrink:0}
+.pr-depth.d1{color:#4ADE80}.pr-depth.d2{color:#60A5FA}
+.pr-meta{font-size:11px;color:var(--text-3);white-space:nowrap;flex-shrink:0;width:70px}
+.pr-tags{display:flex;gap:4px;flex-shrink:0}
+@media(max-width:680px){.pr-meta{display:none}.pr-depth{display:none}.pr-tags{display:none}}
+
+/* MOBILE */
+@media(max-width:680px){
+  .logo{font-size:28px}.tagline{display:none}
+  .player-grid{grid-template-columns:1fr}.flt-cnt{display:none}
+  .detail-panel{right:auto;left:0;bottom:-100%;top:auto;width:100%;height:80vh;border-left:none;border-top:1px solid var(--border);transition:bottom .28s cubic-bezier(.4,0,.2,1)}
+  .detail-panel.open{bottom:0;right:auto}
 }
-
-/* ─── HEADER ─────────────────────────────────────── */
-.header-outer {
-  padding: 24px 20px 0;
-  max-width: 1440px;
-  margin: 0 auto;
-}
-
-.header-row {
-  display: flex;
-  align-items: baseline;
-  gap: 16px;
-  margin-bottom: 18px;
-}
-
-.logo {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: 38px;
-  letter-spacing: 0.04em;
-  line-height: 1;
-  color: var(--text);
-  flex-shrink: 0;
-}
-
-.logo span { color: var(--orange); }
-
-.tagline {
-  font-size: 12px;
-  color: var(--text-3);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding-bottom: 4px;
-}
-
-.count-badge {
-  margin-left: auto;
-  font-size: 12px;
-  color: var(--text-3);
-  white-space: nowrap;
-  padding-bottom: 4px;
-}
-
-/* ─── SEARCH ──────────────────────────────────────── */
-.search-wrap {
-  position: relative;
-  margin-bottom: 4px;
-}
-
-.search-icon {
-  position: absolute;
-  left: 14px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-3);
-  pointer-events: none;
-}
-
-.search-input {
-  width: 100%;
-  padding: 12px 16px 12px 44px;
-  background: var(--surf);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  color: var(--text);
-  font-family: var(--font);
-  font-size: 15px;
-  outline: none;
-  transition: border-color .18s;
-}
-
-.search-input::placeholder { color: var(--text-3); }
-.search-input:focus { border-color: var(--orange); }
-
-/* ─── STICKY CONTROLS ────────────────────────────── */
-.controls-outer {
-  position: sticky;
-  top: 0;
-  z-index: 20;
-  background: var(--bg);
-  border-bottom: 1px solid var(--border);
-}
-
-.controls-inner {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 10px 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-
-/* position pills */
-.pos-row {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  flex-wrap: wrap;
-}
-
-.pos-btn {
-  padding: 5px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--border);
-  background: transparent;
-  color: var(--text-2);
-  font-family: var(--font);
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.05em;
-  cursor: pointer;
-  transition: all .15s;
-}
-
-.pos-btn:hover { border-color: var(--border-2); color: var(--text); }
-
-.pos-btn.active                 { color:#fff; border-color:transparent; }
-.pos-btn.active[data-pos="ALL"] { background: var(--orange); }
-.pos-btn.active[data-pos="QB"]  { background: var(--qb); }
-.pos-btn.active[data-pos="RB"]  { background: var(--rb); }
-.pos-btn.active[data-pos="WR"]  { background: var(--wr); }
-.pos-btn.active[data-pos="TE"]  { background: var(--te); }
-.pos-btn.active[data-pos="K"]   { background: var(--k); }
-.pos-btn.active[data-pos="DEF"] { background: var(--def); }
-
-.filter-count {
-  margin-left: auto;
-  font-size: 12px;
-  color: var(--text-3);
-}
-
-/* toggle row */
-.toggle-row {
-  display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
-}
-
-.toggle-label {
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 12px;
-  color: var(--text-2);
-  cursor: pointer;
-  user-select: none;
-}
-
-.toggle-label input[type="checkbox"] {
-  width: 14px; height: 14px;
-  accent-color: var(--orange);
-  cursor: pointer;
-}
-
-/* sort */
-.sort-select {
-  background: var(--surf);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  color: var(--text-2);
-  font-family: var(--font);
-  font-size: 12px;
-  padding: 3px 8px;
-  cursor: pointer;
-  outline: none;
-}
-
-/* ─── MAIN ────────────────────────────────────────── */
-main {
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-/* ─── GRID ────────────────────────────────────────── */
-.player-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-  gap: 10px;
-}
-
-/* ─── CARD ────────────────────────────────────────── */
-.player-card {
-  background: var(--surf);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 14px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 9px;
-  transition: border-color .18s, transform .15s;
-  cursor: default;
-}
-
-.player-card:hover {
-  border-color: var(--border-2);
-  transform: translateY(-1px);
-}
-
-/* card top */
-.card-top {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.pos-badge {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  padding: 4px 8px;
-  border-radius: 5px;
-  flex-shrink: 0;
-  color: #fff;
-}
-
-.pos-badge.QB  { background: var(--qb); }
-.pos-badge.RB  { background: var(--rb); }
-.pos-badge.WR  { background: var(--wr); }
-.pos-badge.TE  { background: var(--te); }
-.pos-badge.K   { background: var(--k); }
-.pos-badge.DEF { background: var(--def); }
-
-.card-name-block { flex: 1; min-width: 0; }
-
-.player-name {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.player-sub {
-  font-size: 12px;
-  color: var(--text-2);
-  margin-top: 1px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.team-abbr { color: var(--orange); font-weight: 600; }
-
-/* depth row */
-.depth-row {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.depth-key {
-  font-size: 11px;
-  color: var(--text-3);
-  text-transform: uppercase;
-  letter-spacing: 0.07em;
-}
-
-.depth-val {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--text-2);
-}
-
-.depth-val.d1 { color: #4ADE80; }
-.depth-val.d2 { color: #60A5FA; }
-
-/* meta row */
-.meta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-
-.meta-item {
-  font-size: 12px;
-  color: var(--text-3);
-}
-
-.meta-item strong {
-  color: var(--text-2);
-  font-weight: 500;
-}
-
-/* tags */
-.tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  margin-top: 2px;
-}
-
-.tag {
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 0.07em;
-  padding: 2px 7px;
-  border-radius: 4px;
-  text-transform: uppercase;
-}
-
-.tag.pos  { background: var(--tag-g-bg); color: var(--tag-g-tx); }
-.tag.neg  { background: var(--tag-r-bg); color: var(--tag-r-tx); }
-.tag.info { background: var(--tag-b-bg); color: var(--tag-b-tx); }
-.tag.neu  { background: var(--tag-n-bg); color: var(--tag-n-tx); }
-
-/* ─── LOADING ─────────────────────────────────────── */
-.loading {
-  padding: 80px 20px;
-  text-align: center;
-  color: var(--text-2);
-}
-
-.spinner {
-  width: 36px; height: 36px;
-  border: 3px solid var(--border);
-  border-top-color: var(--orange);
-  border-radius: 50%;
-  animation: spin .7s linear infinite;
-  margin: 0 auto 16px;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.loading-sub {
-  font-size: 13px;
-  color: var(--text-3);
-  margin-top: 6px;
-}
-
-/* ─── EMPTY STATE ─────────────────────────────────── */
-.empty {
-  padding: 80px 20px;
-  text-align: center;
-}
-
-.empty h3 { font-size: 17px; color: var(--text-2); margin-bottom: 8px; }
-.empty p  { font-size: 14px; color: var(--text-3); }
-
-/* ─── LOAD MORE ───────────────────────────────────── */
-.load-more-wrap {
-  text-align: center;
-  padding: 28px 0 8px;
-}
-
-.load-more-btn {
-  padding: 10px 32px;
-  background: transparent;
-  border: 1px solid var(--border-2);
-  border-radius: var(--radius);
-  color: var(--text-2);
-  font-family: var(--font);
-  font-size: 13px;
-  cursor: pointer;
-  transition: all .15s;
-}
-
-.load-more-btn:hover { border-color: var(--orange); color: var(--text); }
-
-/* ─── MOBILE ──────────────────────────────────────── */
-@media (max-width: 600px) {
-  .logo { font-size: 28px; }
-  .tagline { display: none; }
-  .player-grid { grid-template-columns: 1fr; }
-  .filter-count { display: none; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .spinner { animation: none; }
-  .player-card { transition: none; }
-}
+@media(prefers-reduced-motion:reduce){.spinner{animation:none}.player-card,.detail-panel{transition:none}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
-<div class="header-outer">
-  <div class="header-row">
+<div class="hdr">
+  <div class="hdr-row">
     <div class="logo">NFL <span>Fantasy</span> DB</div>
-    <div class="tagline">Spillerprofiler · Tags · Scheme</div>
-    <div class="count-badge" id="count-badge">Henter...</div>
+    <div class="tagline">Spillerprofiler · Tags · Madden 27</div>
+    <div class="cnt" id="cnt">Henter…</div>
   </div>
   <div class="search-wrap">
-    <svg class="search-icon" width="17" height="17" viewBox="0 0 24 24" fill="none"
-         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <svg class="search-ico" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
       <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
     </svg>
-    <input class="search-input" type="text" id="search"
-           placeholder="Søg på navn, hold, college…" autocomplete="off" spellcheck="false">
+    <input class="search-input" id="search" type="text" autocomplete="off" spellcheck="false" placeholder="Søg på navn, hold, college…">
   </div>
 </div>
 
-<!-- STICKY CONTROLS -->
-<div class="controls-outer">
-  <div class="controls-inner">
+<div class="ctrl-outer">
+  <div class="ctrl-inner">
     <div class="pos-row">
       <button class="pos-btn active" data-pos="ALL">Alle</button>
       <button class="pos-btn" data-pos="QB">QB</button>
@@ -451,292 +243,639 @@ main {
       <button class="pos-btn" data-pos="TE">TE</button>
       <button class="pos-btn" data-pos="K">K</button>
       <button class="pos-btn" data-pos="DEF">DEF</button>
-      <span class="filter-count" id="filter-count"></span>
+      <span class="flt-cnt" id="flt-cnt"></span>
     </div>
-    <div class="toggle-row">
-      <label class="toggle-label">
-        <input type="checkbox" id="starters-only"> Kun startere
-      </label>
-      <label class="toggle-label">
-        <input type="checkbox" id="hide-ir" checked> Skjul IR/Out
-      </label>
-      <label class="toggle-label">
-        <input type="checkbox" id="hide-fa"> Skjul free agents
-      </label>
-      <select class="sort-select" id="sort-by">
+    <div class="tog-row">
+      <label class="tog-lbl"><input type="checkbox" id="tog-starters"> Kun startere</label>
+      <label class="tog-lbl"><input type="checkbox" id="tog-ir" checked> Skjul IR/Out</label>
+      <label class="tog-lbl"><input type="checkbox" id="tog-fa"> Skjul free agents</label>
+      <select class="sort-sel" id="sort-by">
         <option value="rank">Sorter: Rank</option>
+        <option value="ovr">Sorter: Madden OVR</option>
+        <option value="name">Sorter: Navn</option>
+        <option value="age">Sorter: Alder</option>
+        <option value="exp">Sorter: Erfaring</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" id="btn-cards" title="Kortvisning">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <rect x="0" y="0" width="7" height="7" rx="1"/><rect x="9" y="0" width="7" height="7" rx="1"/>
+            <rect x="0" y="9" width="7" height="7" rx="1"/><rect x="9" y="9" width="7" height="7" rx="1"/>
+          </svg>
+        </button>
+        <button class="view-btn" id="btn-list" title="Listevisning">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor">
+            <rect x="0" y="1" width="16" height="2" rx="1"/><rect x="0" y="7" width="16" height="2" rx="1"/>
+            <rect x="0" y="13" width="16" height="2" rx="1"/>
+          </svg>
+        </button>
+      </div>
+        <option value="rank">Sorter: Rank</option>
+        <option value="ovr">Sorter: Madden OVR</option>
         <option value="name">Sorter: Navn</option>
         <option value="age">Sorter: Alder</option>
         <option value="exp">Sorter: Erfaring</option>
       </select>
     </div>
   </div>
+  <div class="tf-outer">
+    <div class="tf-row">
+      <span class="tf-lbl">Tags</span>
+      <div id="tf-pills"></div>
+      <button class="tf-reset" id="tf-reset" style="display:none">✕ Nulstil</button>
+    </div>
+  </div>
 </div>
 
-<!-- MAIN CONTENT -->
 <main>
   <div id="loading" class="loading">
     <div class="spinner"></div>
-    <div>Henter NFL-spillere fra Sleeper API…</div>
-    <div class="loading-sub">Første gang kan tage et par sekunder (5 MB data)</div>
+    <div>Henter NFL-spillere og Madden 27-ratings…</div>
+    <div class="loading-sub">Første gang kan tage et par sekunder</div>
   </div>
-
   <div id="player-grid" class="player-grid" style="display:none"></div>
-
   <div id="empty" class="empty" style="display:none">
     <h3>Ingen spillere fundet</h3>
-    <p>Prøv et andet navn, hold eller juster filtrene.</p>
+    <p>Prøv et andet navn eller juster filtrene.</p>
   </div>
-
-  <div id="load-more-wrap" class="load-more-wrap" style="display:none">
-    <button class="load-more-btn" id="load-more-btn">Vis flere spillere</button>
+  <div id="lm-wrap" class="lm-wrap" style="display:none">
+    <button class="lm-btn" id="lm-btn">Vis flere spillere</button>
   </div>
 </main>
+
+<div class="overlay" id="overlay"></div>
+<div class="detail-panel" id="detail-panel">
+  <div class="dp-close">
+    <span class="dp-close-title">Spillerprofil</span>
+    <button class="dp-close-btn" id="dp-close-btn">✕ Luk</button>
+  </div>
+  <div class="dp-body" id="dp-body"></div>
+</div>
 
 <script>
 'use strict';
 
-// ── Config ──────────────────────────────────────────────────────────────────
-const POSITIONS   = ['QB','RB','WR','TE','K','DEF'];
-const PAGE_SIZE   = 60;
-const CACHE_KEY   = 'nfl_players_v2';
-const CACHE_EXP   = 'nfl_players_exp_v2';
-const CACHE_HOURS = 6;
+/* ── Constants ──────────────────────────────────────────── */
+const POSITIONS  = ['QB','RB','WR','TE','K','DEF'];
+const PAGE_SIZE  = 60;
+const CACHE_KEY  = 'nfl_db_v5';
+const CACHE_EXP  = 'nfl_db_exp_v5';
+const MADDEN_URL = 'https://slaskedaske.github.io/nfl-fantasy-db/madden.json';
+const POS_COLOR  = {QB:'#E05252',RB:'#3B82F6',WR:'#22C55E',TE:'#F59E0B',K:'#A78BFA',DEF:'#64748B'};
 
-// ── State ────────────────────────────────────────────────────────────────────
-let allPlayers   = [];
-let filtered     = [];
-let displayCount = PAGE_SIZE;
-let activePos    = 'ALL';
-let startersOnly = false;
-let hideIR       = true;
-let hideFA       = false;
-let sortBy       = 'rank';
+// Madden attributes to display per position
+const MADDEN_ATTRS = {
+  QB: [{l:'Speed',k:'speed'},{l:'Throw Power',k:'throw_power'},{l:'Short Acc.',k:'throw_acc_short'},
+       {l:'Medium Acc.',k:'throw_acc_mid'},{l:'Deep Acc.',k:'throw_acc_deep'},
+       {l:'Under Press.',k:'throw_tup'},{l:'Awareness',k:'awareness'},{l:'Injury',k:'injury'}],
+  RB: [{l:'Speed',k:'speed'},{l:'Acceleration',k:'acceleration'},{l:'Break Tackle',k:'break_tackle'},
+       {l:'Trucking',k:'trucking'},{l:'Catching',k:'catching'},{l:'Route Running',k:'route_short'},
+       {l:'Juke Move',k:'juke_move'},{l:'Change of Dir.',k:'cod'},{l:'Injury',k:'injury'}],
+  WR: [{l:'Speed',k:'speed'},{l:'Route Running',k:'route_short'},{l:'Catching',k:'catching'},
+       {l:'Spec. Catch',k:'spectacular_catch'},{l:'Release',k:'release'},
+       {l:'Catch Traffic',k:'catch_traffic'},{l:'Awareness',k:'awareness'},{l:'Injury',k:'injury'}],
+  TE: [{l:'Speed',k:'speed'},{l:'Catching',k:'catching'},{l:'Route Running',k:'route_short'},
+       {l:'Spec. Catch',k:'spectacular_catch'},{l:'Release',k:'release'},
+       {l:'Run Block',k:'run_block'},{l:'Pass Block',k:'pass_block'},{l:'Injury',k:'injury'}],
+  K:  [{l:'Kick Power',k:'kick_power'},{l:'Kick Accuracy',k:'kick_accuracy'},
+       {l:'Awareness',k:'awareness'},{l:'Injury',k:'injury'}],
+  DEF:[{l:'Speed',k:'speed'},{l:'Awareness',k:'awareness'},{l:'Injury',k:'injury'}],
+};
 
-// ── Boot ─────────────────────────────────────────────────────────────────────
+const TAG_DESC = {
+  'ELITE':'Top-12 fantasy ADP – ugentlig starter i alle ligarunder',
+  'TOP 50':'Top-50 ADP – stærk startspiller i 10-12 mands ligarunder',
+  'TOP 100':'Top-100 ADP – relevant i 12 mands ligarunder',
+  'STARTER':'Depth chart #1 – starter som udgangspunkt hver uge',
+  'HANDCUFF':'RB backup bag en elite RB1 – oplagt at eje samme sted',
+  'BACKUP':'Depth chart #2 – spiller kun ved skade på starter',
+  'DEPTH':'Depth chart #3+ – kun relevant ved flere skader',
+  'ROOKIE':'1. NFL-sæson – potentiale men uforudsigelig rolle',
+  '2ND YEAR':'2. NFL-sæson – klassisk breakout-vindue for mange positioner',
+  '3RD YEAR':'3. NFL-sæson – spil der ikke har brudt ud nu er ofte backup for evigt',
+  'VETERAN':'8+ NFL-sæsoner – erfaren profil, men hold øje med alderskurven',
+  'LEGEND':'12+ NFL-sæsoner – sent i karrieren, overvej decline-risiko',
+  'PRIME AGE':'Inden for den statistisk stærkeste aldersgruppe for positionen',
+  'AGE CONCERN':'Uden for prime-vinduet – forhøjet decline-risiko',
+  'POWER BACK':'Tung RB (≥220 lbs) – stærk i short yardage og mål-linje-situationer',
+  'RECEIVING BACK':'Let RB (≤205 lbs) – designet som pass-catching weapon ud af backfield',
+  'BIG BODY':'WR med elite-størrelse (≥6\'3" og ≥205 lbs) – svær at presse i end zone',
+  'SLOT BUILD':'Kort WR (≤5\'10") – klassisk slot-profil, mange targets på korte ruter',
+  'ELITE SIZE':'TE med ekstrem størrelse (≥6\'4" og ≥248 lbs) – dominant redzone-target',
+  'FREE AGENT':'Ikke på et hold pt.',
+  'IR':'Injured Reserve – ude for sæsonen (eller minimum 4 uger)',
+  'OUT':'Meldt ude til næste kamp',
+  'DOUBTFUL':'Tvivlsom (under 25% chance) til næste kamp',
+  'QUESTIONABLE':'Usikker til næste kamp – følg ugerapporterne tæt',
+  'PUP':'Physically Unable to Perform-listen',
+  'NFI':'Non-Football Injury',
+  'KNEE CONCERN':'Knæskade – hold øje med recovery og eksplosivitet',
+  'HAMSTRING':'Hamstringskade – notorisk svær at time, forhøjet gentagelsesrisiko',
+  'ANKLE CONCERN':'Ankelskade – kan reducere acceleration og ruteskarphed',
+  'SHOULDER':'Skulderskade – særligt kritisk for QBs og WRs',
+  'FOOT CONCERN':'Fodskade – lang recovery',
+  'HIP CONCERN':'Hofteskade – central for explosiveness',
+  'BACK CONCERN':'Rygskade – kronisk bekymring, særligt for RBs',
+  'DNP':'Did Not Participate i træning – høj risiko for at misse kampen',
+  'LIMITED PRACTICE':'Begrænset træningsdeltagelse – tjek fredags skaderapporten',
+  // Madden tags
+  'SPEED DEMON':'Madden 27 Speed ≥ 92 – top 5% hastighed i NFL, kan true enhver forsvarsspiller vertikalt',
+  'ROUTE TECH':'Short Route Running ≥ 87 – elite ruteskarphed, skaber konsekvent separation',
+  'SURE HANDS':'Catching ≥ 87 – pålidelig boldmodtager, sjældent drops selv i trafikken',
+  'CANNON ARM':'Throw Power ≥ 92 – kan true hele banen, inkl. dybe vertikale ruter',
+  'ACCURATE QB':'Høj præcision på korte og mellemlange kast (≥ 87) – lav INJ-risiko',
+  'POWER RUNNER':'Trucking eller Break Tackle ≥ 85 – svær at tackle efter kontakt',
+  'EVASIVE':'Juke Move eller Change of Direction ≥ 88 – ekstrem evasiveness i åbent felt',
+  'INJURY PRONE':'Madden injury rating < 75 – historisk høj skadeprocent ifølge EA',
+  'DURABLE':'Madden injury rating ≥ 92 – historisk lav skadeprocent, konsekvent tilgængelig',
+};
+
+/* ── State ──────────────────────────────────────────────── */
+let allPlayers=[], filtered=[], displayCount=PAGE_SIZE;
+let activePos='ALL', sortBy='rank';
+let togStarters=false, togIR=true, togFA=false;
+let activeTags=new Set();
+let maddenData={};
+let listView=false;
+
+/* ── Boot ───────────────────────────────────────────────── */
 async function init() {
   try {
-    const raw = await loadPlayers();
-    allPlayers = processPlayers(raw);
-    document.getElementById('count-badge').textContent =
-      `${allPlayers.length.toLocaleString('da')} spillere`;
+    const [sleeperRaw, maddenRaw] = await Promise.all([
+      loadSleeper(),
+      loadMadden(),
+    ]);
+    maddenData = maddenRaw;
+    const mCount = Object.keys(maddenData).length;
+    allPlayers = processPlayers(sleeperRaw);
+    document.getElementById('cnt').textContent =
+      `${allPlayers.length.toLocaleString('da')} spillere · Madden 27 (${mCount})`;
     applyFilters();
-  } catch (err) {
+  } catch(err) {
     document.getElementById('loading').innerHTML =
-      `<p style="color:var(--tag-r-tx)">Kunne ikke hente data. Tjek din forbindelse og prøv igen.</p>`;
+      '<p style="color:var(--tr-tx)">Kunne ikke hente data – tjek din forbindelse og genindlæs.</p>';
     console.error(err);
   }
 }
 
-// ── Data fetch ───────────────────────────────────────────────────────────────
-async function loadPlayers() {
+/* ── Data fetching ──────────────────────────────────────── */
+async function loadSleeper() {
   try {
     const exp = localStorage.getItem(CACHE_EXP);
-    const cached = localStorage.getItem(CACHE_KEY);
-    if (cached && exp && Date.now() < parseInt(exp, 10)) {
-      return JSON.parse(cached);
-    }
-  } catch (_) {}
-
-  const res  = await fetch('https://api.sleeper.app/v1/players/nfl');
-  const data = await res.json();
-
+    const raw = localStorage.getItem(CACHE_KEY);
+    if (raw && exp && Date.now() < +exp) return JSON.parse(raw);
+  } catch(_){}
+  const r = await fetch('https://api.sleeper.app/v1/players/nfl');
+  const data = await r.json();
   try {
     localStorage.setItem(CACHE_KEY, JSON.stringify(data));
-    localStorage.setItem(CACHE_EXP, (Date.now() + CACHE_HOURS * 3600_000).toString());
-  } catch (_) {
-    // Storage quota exceeded – carry on without caching
-  }
-
+    localStorage.setItem(CACHE_EXP, (Date.now() + 6*3_600_000).toString());
+  } catch(_){}
   return data;
 }
 
-// ── Process raw Sleeper data ──────────────────────────────────────────────────
+async function loadMadden() {
+  try {
+    const r = await fetch(MADDEN_URL);
+    if (!r.ok) return {};
+    const data = await r.json();
+    return data.players || {};
+  } catch(e) {
+    console.warn('Madden data ikke tilgængelig:', e);
+    return {};
+  }
+}
+
+/* ── Process players ────────────────────────────────────── */
 function processPlayers(raw) {
   return Object.values(raw)
     .filter(p => {
-      if (!p.full_name || !p.position) return false;
-      if (!POSITIONS.includes(p.position)) return false;
-      if (p.active === false) return false;
-      // Keep players on a team, or notable free agents
-      if (!p.team && (!p.search_rank || p.search_rank > 300)) return false;
+      if (!p.full_name || !p.position)          return false;
+      if (!POSITIONS.includes(p.position))       return false;
+      if (p.active === false)                    return false;
+      if (p.status === 'Inactive')               return false;
+      if (p.position === 'DEF' && !p.team)      return false;
+      if (!p.team && (!p.search_rank || p.search_rank > 150)) return false;
       return true;
     })
-    .map(p => ({ ...p, tags: buildTags(p) }))
-    .sort(compareFn('rank'));
+    .map(p => {
+      const _age = calcAge(p);
+      const enriched = { ...p, _age };
+      return { ...enriched, tags: buildTags(enriched) };
+    })
+    .sort(mkSort('rank'));
 }
 
-// ── Tag generation ────────────────────────────────────────────────────────────
+/* ── Age ────────────────────────────────────────────────── */
+function calcAge(p) {
+  if (p.birth_date) {
+    const [y,m,d] = p.birth_date.split('-').map(Number);
+    const now = new Date();
+    let age = now.getFullYear() - y;
+    if (now.getMonth()+1 < m || (now.getMonth()+1===m && now.getDate()<d)) age--;
+    return age;
+  }
+  return p.age ?? null;
+}
+
+function ageTag(pos, age) {
+  if (!age||!pos) return null;
+  const prime={QB:[25,34],RB:[22,27],WR:[23,29],TE:[24,30]};
+  const concern={QB:35,RB:29,WR:31,TE:32};
+  const r=prime[pos]; if(!r) return null;
+  if (age>=r[0]&&age<=r[1]) return 'PRIME';
+  if (concern[pos]&&age>=concern[pos]) return 'CONCERN';
+  return null;
+}
+
+/* ── Tag generation ─────────────────────────────────────── */
 function buildTags(p) {
-  const t   = [];
-  const yr  = p.years_exp;
-  const dc  = p.depth_chart_order;
-  const inj = p.injury_status;
-  const sr  = p.search_rank;
+  const t=[],yr=p.years_exp,dc=p.depth_chart_order,inj=p.injury_status,sr=p.search_rank;
+  const wt=parseInt(p.weight,10)||0, ht=parseInt(p.height,10)||0, pos=p.position;
+  const m = maddenData[p.player_id] || {};
 
-  // Rank tier
-  if (sr && sr <= 12)  t.push({ l:'ELITE', c:'pos' });
-  else if (sr && sr <= 50)  t.push({ l:'TOP 50', c:'pos' });
-  else if (sr && sr <= 100) t.push({ l:'TOP 100', c:'pos' });
+  // Rank
+  if      (sr&&sr<=12)  t.push({l:'ELITE',  c:'pos'});
+  else if (sr&&sr<=50)  t.push({l:'TOP 50', c:'pos'});
+  else if (sr&&sr<=100) t.push({l:'TOP 100',c:'pos'});
 
-  // Depth chart
-  if (dc === 1)                        t.push({ l:'STARTER', c:'pos' });
-  else if (dc === 2 && p.position==='RB') t.push({ l:'HANDCUFF', c:'neu' });
-  else if (dc === 2)                   t.push({ l:'BACKUP', c:'neu' });
-  else if (dc >= 3)                    t.push({ l:'DEPTH', c:'neu' });
+  // Depth
+  if      (dc===1)              t.push({l:'STARTER', c:'pos'});
+  else if (dc===2&&pos==='RB')  t.push({l:'HANDCUFF',c:'neu'});
+  else if (dc===2)              t.push({l:'BACKUP',  c:'neu'});
+  else if (dc>=3)               t.push({l:'DEPTH',   c:'neu'});
 
   // Experience
-  if (yr === 0) t.push({ l:'ROOKIE', c:'info' });
-  else if (yr >= 12) t.push({ l:'LEGEND', c:'info' });
-  else if (yr >= 8)  t.push({ l:'VETERAN', c:'info' });
+  if      (yr===0)  t.push({l:'ROOKIE',  c:'info'});
+  else if (yr===1)  t.push({l:'2ND YEAR',c:'info'});
+  else if (yr===2)  t.push({l:'3RD YEAR',c:'info'});
+  else if (yr>=12)  t.push({l:'LEGEND',  c:'info'});
+  else if (yr>=8)   t.push({l:'VETERAN', c:'info'});
 
-  // Team status
-  if (!p.team) t.push({ l:'FREE AGENT', c:'neu' });
+  // Age stage
+  const stage=ageTag(pos,p._age);
+  if (stage==='PRIME')   t.push({l:'PRIME AGE',  c:'pos'});
+  if (stage==='CONCERN') t.push({l:'AGE CONCERN',c:'neg'});
 
-  // Injury
-  const injMap = { IR:'IR', Out:'OUT', Doubtful:'DOUBTFUL',
-                   Questionable:'QUESTIONABLE', PUP:'PUP', NFI:'NFI' };
-  if (inj && injMap[inj]) t.push({ l:injMap[inj], c:'neg' });
+  // Physical (only if no Madden data)
+  if (!m.speed) {
+    if (pos==='RB'&&wt>0) {
+      if      (wt>=220) t.push({l:'POWER BACK',    c:'info'});
+      else if (wt<=205) t.push({l:'RECEIVING BACK',c:'info'});
+    }
+    if (pos==='WR'&&ht>0&&wt>0) {
+      if      (ht>=75&&wt>=205) t.push({l:'BIG BODY',  c:'info'});
+      else if (ht<=70)          t.push({l:'SLOT BUILD', c:'info'});
+    }
+    if (pos==='TE'&&ht>=76&&wt>=248) t.push({l:'ELITE SIZE',c:'pos'});
+  }
+
+  // ── Madden-based tags ────────────────────────────────────
+  if (Object.keys(m).length > 0) {
+    if (m.speed >= 92)                                  t.push({l:'SPEED DEMON',   c:'pos'});
+    if ((pos==='WR'||pos==='TE') && m.route_short >= 87) t.push({l:'ROUTE TECH',  c:'pos'});
+    if ((pos==='WR'||pos==='TE'||pos==='RB') && m.catching >= 87) t.push({l:'SURE HANDS',c:'pos'});
+    if (pos==='QB' && m.throw_power >= 92)              t.push({l:'CANNON ARM',   c:'pos'});
+    if (pos==='QB' && ((m.throw_acc_short||0)+(m.throw_acc_mid||0)) >= 175)
+                                                        t.push({l:'ACCURATE QB',  c:'pos'});
+    if (pos==='RB' && ((m.trucking||0)>=85||(m.break_tackle||0)>=85))
+                                                        t.push({l:'POWER RUNNER', c:'info'});
+    if (pos==='RB' && ((m.juke_move||0)>=88||(m.cod||0)>=88))
+                                                        t.push({l:'EVASIVE',      c:'info'});
+    if (m.injury != null && m.injury < 75)              t.push({l:'INJURY PRONE', c:'neg'});
+    if (m.injury != null && m.injury >= 92)             t.push({l:'DURABLE',      c:'pos'});
+  }
+
+  // Team/injury
+  if (!p.team) t.push({l:'FREE AGENT',c:'neu'});
+  const injMap={IR:'IR',Out:'OUT',Doubtful:'DOUBTFUL',Questionable:'QUESTIONABLE',PUP:'PUP',NFI:'NFI'};
+  if (inj&&injMap[inj]) t.push({l:injMap[inj],c:'neg'});
+  if (p.injury_body_part) {
+    const bp=p.injury_body_part.toLowerCase();
+    const bpMap=[['knee','KNEE CONCERN'],['hamstring','HAMSTRING'],['ankle','ANKLE CONCERN'],
+                 ['shoulder','SHOULDER'],['foot','FOOT CONCERN'],['hip','HIP CONCERN'],['back','BACK CONCERN']];
+    for (const [k,lbl] of bpMap) { if(bp.includes(k)){t.push({l:lbl,c:'neg'});break;} }
+  }
+  const pp=p.practice_participation;
+  if      (pp==='DNP')     t.push({l:'DNP',             c:'neg'});
+  else if (pp==='Limited') t.push({l:'LIMITED PRACTICE',c:'neg'});
 
   return t;
 }
 
-// ── Sorting ───────────────────────────────────────────────────────────────────
-function compareFn(key) {
-  return (a, b) => {
-    switch (key) {
-      case 'name': return (a.full_name||'').localeCompare(b.full_name||'', 'da');
-      case 'age':  return (a.age||99) - (b.age||99);
-      case 'exp':  return (b.years_exp||0) - (a.years_exp||0);
-      default:     return (a.search_rank||9999) - (b.search_rank||9999);
+/* ── Sorting ────────────────────────────────────────────── */
+function mkSort(key) {
+  return (a,b) => {
+    if(key==='name') return (a.full_name||'').localeCompare(b.full_name||'','da');
+    if(key==='age')  return (a._age||99)-(b._age||99);
+    if(key==='exp')  return (b.years_exp||0)-(a.years_exp||0);
+    if(key==='ovr') {
+      const ma=maddenData[a.player_id], mb=maddenData[b.player_id];
+      return ((mb&&mb.overall)||0)-((ma&&ma.overall)||0);
     }
+    return (a.search_rank||9999)-(b.search_rank||9999);
   };
 }
 
-// ── Filter + render ───────────────────────────────────────────────────────────
+/* ── Filter ─────────────────────────────────────────────── */
 function applyFilters() {
-  const q = document.getElementById('search').value.trim().toLowerCase();
-
-  filtered = allPlayers
-    .filter(p => {
-      if (activePos !== 'ALL' && p.position !== activePos) return false;
-      if (startersOnly && p.depth_chart_order !== 1)       return false;
-      if (hideIR && (p.injury_status === 'IR' || p.injury_status === 'Out')) return false;
-      if (hideFA && !p.team)                               return false;
-      if (q) {
-        const hay = [p.full_name, p.team, p.college, p.depth_chart_position]
-          .filter(Boolean).join(' ').toLowerCase();
-        if (!hay.includes(q)) return false;
-      }
-      return true;
-    })
-    .sort(compareFn(sortBy));
-
-  displayCount = PAGE_SIZE;
-  render();
+  const q=document.getElementById('search').value.trim().toLowerCase();
+  const base = allPlayers.filter(p => {
+    if (activePos!=='ALL'&&p.position!==activePos) return false;
+    if (togStarters&&p.depth_chart_order!==1)      return false;
+    if (togIR&&(p.injury_status==='IR'||p.injury_status==='Out')) return false;
+    if (togFA&&!p.team)                            return false;
+    if (q) {
+      const hay=[p.full_name,p.team,p.college,p.depth_chart_position].filter(Boolean).join(' ').toLowerCase();
+      if (!hay.includes(q)) return false;
+    }
+    return true;
+  }).sort(mkSort(sortBy));
+  updateTagPills(base);
+  filtered = activeTags.size>0
+    ? base.filter(p=>{const pts=new Set((p.tags||[]).map(t=>t.l));return [...activeTags].every(tag=>pts.has(tag));})
+    : base;
+  displayCount=PAGE_SIZE; render();
 }
 
-// ── DOM rendering ─────────────────────────────────────────────────────────────
+/* ── Tag pills ──────────────────────────────────────────── */
+function updateTagPills(base) {
+  const counts={};
+  base.forEach(p=>(p.tags||[]).forEach(t=>{if(!counts[t.l])counts[t.l]={n:0,c:t.c};counts[t.l].n++;}));
+  const entries=Object.entries(counts).sort((a,b)=>{
+    const aOn=activeTags.has(a[0])?1:0,bOn=activeTags.has(b[0])?1:0;
+    if(aOn!==bOn)return bOn-aOn; return b[1].n-a[1].n;
+  });
+  const pRow=document.getElementById('tf-pills');
+  pRow.innerHTML=entries.map(([lbl,{n,c}])=>{
+    const on=activeTags.has(lbl);
+    return `<button class="tf-pill ${c}${on?' on':''}" data-tag="${lbl.replace(/"/g,'&quot;')}">${lbl} <span class="tf-n">${n}</span></button>`;
+  }).join('');
+  pRow.querySelectorAll('.tf-pill').forEach(btn=>btn.addEventListener('click',()=>{
+    const tag=btn.dataset.tag;
+    if(activeTags.has(tag))activeTags.delete(tag);else activeTags.add(tag);
+    applyFilters();
+  }));
+  document.getElementById('tf-reset').style.display=activeTags.size?'inline-block':'none';
+}
+
+/* ── Render ─────────────────────────────────────────────── */
 function render() {
-  const grid   = document.getElementById('player-grid');
-  const empty  = document.getElementById('empty');
-  const lmWrap = document.getElementById('load-more-wrap');
-  document.getElementById('loading').style.display = 'none';
-  document.getElementById('filter-count').textContent =
-    `${filtered.length.toLocaleString('da')} spillere`;
-
-  if (!filtered.length) {
-    grid.style.display   = 'none';
-    empty.style.display  = 'block';
-    lmWrap.style.display = 'none';
-    return;
+  const grid=document.getElementById('player-grid');
+  const empty=document.getElementById('empty');
+  const lmw=document.getElementById('lm-wrap');
+  document.getElementById('loading').style.display='none';
+  document.getElementById('flt-cnt').textContent=filtered.length.toLocaleString('da')+' spillere';
+  if(!filtered.length){grid.style.display='none';empty.style.display='block';lmw.style.display='none';return;}
+  empty.style.display='none';
+  const slice=filtered.slice(0,displayCount);
+  if(listView){
+    grid.className='player-list'; grid.style.display='flex';
+    grid.innerHTML=slice.map(rowHTML).join('');
+  } else {
+    grid.className='player-grid'; grid.style.display='grid';
+    grid.innerHTML=slice.map(cardHTML).join('');
   }
-
-  empty.style.display = 'none';
-  grid.style.display  = 'grid';
-  grid.innerHTML = filtered.slice(0, displayCount).map(cardHTML).join('');
-  lmWrap.style.display = displayCount < filtered.length ? 'block' : 'none';
+  lmw.style.display=displayCount<filtered.length?'block':'none';
+  grid.querySelectorAll('.player-card,.player-row').forEach((el,i)=>el.addEventListener('click',()=>openDetail(filtered[i])));
 }
 
-// ── Card HTML ─────────────────────────────────────────────────────────────────
+/* ── List row HTML ──────────────────────────────────────── */
+function rowHTML(p) {
+  const pos=p.position||'–', clr=POS_COLOR[pos]||'#64748B';
+  const initials=(p.full_name||'').split(' ').map(n=>n[0]||'').join('').slice(0,2).toUpperCase();
+  const photoUrl=p.player_id?`https://sleepercdn.com/content/nfl/players/thumb/${p.player_id}.jpg`:'';
+  const dc=p.depth_chart_order;
+  const dcCls=dc===1?'d1':dc===2?'d2':'';
+  const dcLbl=dc?`${p.depth_chart_position||pos}${dc}`:'';
+  const teamStr=p.team?`<span class="team-abbr">${e(p.team)}</span>`:`<span style="color:var(--text-3)">FA</span>`;
+  const college=p.college?` · ${e(p.college)}`:'';
+  const m=maddenData[p.player_id];
+  const ovr=m&&m.overall;
+  const ovrCol=ovr?ovrColor(ovr):'var(--text-3)';
+  const topTags=(p.tags||[]).slice(0,3).map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
+  const ageMeta=p._age?`${p._age}år`:'';
+  const expMeta=p.years_exp!=null?`${p.years_exp}s`:'';
+  return `
+<div class="player-row">
+  <div class="pr-hs" style="--c:${clr}">
+    <div class="pr-hs-inner">
+      <div class="pr-hs-fb">${initials}</div>
+      ${photoUrl?`<img loading="lazy" src="${photoUrl}" alt="" onerror="this.remove()">`:''}
+    </div>
+  </div>
+  <span class="pr-pos" style="background:${clr}">${pos}</span>
+  <div class="pr-info">
+    <div class="pr-name">${e(p.full_name)}</div>
+    <div class="pr-sub">${teamStr}${college}</div>
+  </div>
+  <div class="pr-ovr" style="color:${ovrCol}">${ovr||'–'}</div>
+  <div class="pr-depth ${dcCls}">${dcLbl}</div>
+  <div class="pr-meta">${ageMeta}${ageMeta&&expMeta?' · ':''}${expMeta}</div>
+  <div class="pr-tags">${topTags}</div>
+</div>`;}
+
+/* ── Card HTML ──────────────────────────────────────────── */
 function cardHTML(p) {
-  const pos = p.position || '–';
-  const dc  = p.depth_chart_order;
-  const dcClass = dc === 1 ? 'd1' : dc === 2 ? 'd2' : '';
-  const dcPos   = p.depth_chart_position || pos;
-  const dcLabel = dc ? `${dcPos}${dc}` : '';
-
-  const teamStr = p.team
-    ? `<span class="team-abbr">${p.team}</span>${p.number ? ` #${p.number}` : ''}`
-    : `<span style="color:var(--text-3)">Free Agent</span>`;
-
-  const college = p.college
-    ? ` · <span title="College">${p.college}</span>` : '';
-
-  const agePart = p.age
-    ? `<span class="meta-item"><strong>${p.age}</strong> år</span>` : '';
-  const expPart = p.years_exp !== undefined
-    ? `<span class="meta-item"><strong>${p.years_exp}</strong> sæs.</span>` : '';
-  const htPart  = p.height
-    ? `<span class="meta-item">${p.height}${p.weight ? ' / ' + p.weight + ' lbs' : ''}</span>` : '';
-
-  const tagsHTML = (p.tags || [])
-    .map(t => `<span class="tag ${t.c}">${t.l}</span>`)
-    .join('');
-
+  const pos=p.position||'–', clr=POS_COLOR[pos]||'#64748B';
+  const initials=(p.full_name||'').split(' ').map(n=>n[0]||'').join('').slice(0,2).toUpperCase();
+  const photoUrl=p.player_id?`https://sleepercdn.com/content/nfl/players/thumb/${p.player_id}.jpg`:'';
+  const dc=p.depth_chart_order;
+  const dcCls=dc===1?'d1':dc===2?'d2':'';
+  const dcLbl=dc?`${p.depth_chart_position||pos}${dc}`:'';
+  const teamStr=p.team?`<span class="team-abbr">${e(p.team)}</span>${p.number?` #${p.number}`:''}`:`<span style="color:var(--text-3)">Free Agent</span>`;
+  const college=p.college?` · ${e(p.college)}`:'';
+  const agePt=p._age?`<span class="meta-item"><strong>${p._age}</strong> år</span>`:'';
+  const expPt=p.years_exp!=null?`<span class="meta-item"><strong>${p.years_exp}</strong> sæs.</span>`:'';
+  const htPt=p.height?`<span class="meta-item">${fmtH(p.height)}${p.weight?' / '+p.weight+' lbs':''}</span>`:'';
+  const tagsH=(p.tags||[]).map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
+  const m=maddenData[p.player_id];
+  const ovrCol=m&&m.overall?ovrColor(m.overall):'var(--text-3)';
+  const ovrBadge=m&&m.overall?`<span class="card-ovr" style="background:${ovrCol}">${m.overall}</span>`:'';
   return `
 <div class="player-card">
   <div class="card-top">
-    <span class="pos-badge ${pos}">${pos}</span>
-    <div class="card-name-block">
-      <div class="player-name">${esc(p.full_name)}</div>
+    <div class="hs-wrap" style="--c:${clr}">
+      <div class="hs-inner">
+        <div class="hs-fallback">${initials}</div>
+        ${photoUrl?`<img class="hs-img" src="${photoUrl}" alt="" loading="lazy" onerror="this.remove()">`:''}
+      </div>
+      <span class="hs-badge">${pos}</span>
+    </div>
+    <div class="card-info">
+      <div class="player-name">${e(p.full_name)}</div>
       <div class="player-sub">${teamStr}${college}</div>
     </div>
+    ${ovrBadge}
   </div>
-  ${dcLabel ? `<div class="depth-row">
-    <span class="depth-key">Depth</span>
-    <span class="depth-val ${dcClass}">${dcLabel}</span>
-  </div>` : ''}
-  <div class="meta-row">${agePart}${expPart}${htPart}</div>
-  ${tagsHTML ? `<div class="tags">${tagsHTML}</div>` : ''}
+  ${dcLbl?`<div class="depth-row"><span class="depth-key">Depth</span><span class="depth-val ${dcCls}">${dcLbl}</span></div>`:''}
+  <div class="meta-row">${agePt}${expPt}${htPt}</div>
+  ${tagsH?`<div class="tags">${tagsH}</div>`:''}
 </div>`;
 }
 
-function esc(s) {
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+/* ── Detail panel ───────────────────────────────────────── */
+function openDetail(p) {
+  const pos=p.position||'–', clr=POS_COLOR[pos]||'#64748B';
+  const initials=(p.full_name||'').split(' ').map(n=>n[0]||'').join('').slice(0,2).toUpperCase();
+  const photoUrl=p.player_id?`https://sleepercdn.com/content/nfl/players/thumb/${p.player_id}.jpg`:'';
+  const dc=p.depth_chart_order;
+  const dcLbl=dc?`${p.depth_chart_position||pos}${dc}`:'';
+  const teamLine=p.team?`<span class="team-abbr">${e(p.team)}</span>${p.number?` · #${p.number}`:''}`:'Free Agent';
+  const college=p.college?` · ${e(p.college)}`:'';
+  const stage=ageTag(pos,p._age);
+  const stageStr=stage==='PRIME'?' · Prime':stage==='CONCERN'?' · Age concern':'';
+  const stats=[
+    {k:'Alder',  v:p._age!=null?`${p._age} år${stageStr}`:'–'},
+    {k:'Erfaring',v:p.years_exp!=null?p.years_exp+' sæs.':'–'},
+    {k:'Højde',  v:fmtH(p.height)},
+    {k:'Vægt',   v:p.weight?p.weight+' lbs':'–'},
+  ];
+  const tagsHTML=(p.tags||[]).map(t=>`
+    <div class="dp-tag-row">
+      <span class="dp-tag-chip ${t.c}">${t.l}</span>
+      <span class="dp-tag-desc">${TAG_DESC[t.l]||''}</span>
+    </div>`).join('');
+
+  // Injury section
+  const injLines=[];
+  if(p.injury_status)          injLines.push(`<div class="dp-inj-row"><span class="dp-inj-key">Status</span><span class="dp-inj-val">${e(p.injury_status)}</span></div>`);
+  if(p.injury_body_part)       injLines.push(`<div class="dp-inj-row"><span class="dp-inj-key">Skadested</span><span class="dp-inj-val">${e(p.injury_body_part)}</span></div>`);
+  if(p.practice_participation) injLines.push(`<div class="dp-inj-row"><span class="dp-inj-key">Træning</span><span class="dp-inj-val">${e(p.practice_participation)}</span></div>`);
+  if(p.injury_start_date)      injLines.push(`<div class="dp-inj-row"><span class="dp-inj-key">Siden</span><span class="dp-inj-val">${e(p.injury_start_date)}</span></div>`);
+  const injHTML=injLines.length?`<div class="dp-section dp-injury">
+    <div class="dp-sec-title" style="color:var(--tr-tx)">⚑ Skadestatus</div>${injLines.join('')}</div>`:'';
+
+  // Madden section
+  const m = maddenData[p.player_id];
+  let maddenHTML;
+  if (m && m.overall) {
+    const attrs = MADDEN_ATTRS[pos] || MADDEN_ATTRS.DEF;
+    const bars = attrs.map(({l,k}) => {
+      const v = m[k];
+      if (v == null) return '';
+      const col = v>=90?'#4ADE80':v>=80?'#F97316':v>=70?'#60A5FA':'#F87171';
+      return `<div class="mr-row">
+        <span class="mr-lbl">${l}</span>
+        <div class="mr-bar-bg"><div class="mr-bar" style="width:${v}%;background:${col}"></div></div>
+        <span class="mr-val" style="color:${col}">${v}</span>
+      </div>`;
+    }).join('');
+    maddenHTML = `<div class="dp-section">
+      <div class="dp-sec-title">Madden 27 Ratings</div>
+      <div class="dp-madden-header">
+        <div class="dp-ovr-badge" style="background:${clr}">${m.overall}</div>
+        <div class="dp-ovr-info">
+          <div class="dp-ovr-label">Overall: ${m.overall}</div>
+          <div class="dp-ovr-src">Madden NFL 27 · maddenratings.com</div>
+        </div>
+      </div>
+      ${bars}
+    </div>`;
+  } else {
+    maddenHTML = `<div class="dp-section">
+      <div class="dp-sec-title">Madden 27 Ratings</div>
+      <div class="dp-placeholder">
+        <div class="dp-ph-label">Madden-data ikke tilgængelig for denne spiller</div>
+      </div>
+    </div>`;
+  }
+
+  // Draft info
+  const me=p.metadata||{};
+  const draftHTML=(me.draft_year||me.draft_round)?`<div class="dp-section">
+    <div class="dp-sec-title">Draft</div>
+    <div class="dp-grid-2">
+      ${me.draft_year?`<div class="dp-stat"><div class="dp-stat-val">${me.draft_year}</div><div class="dp-stat-key">Sæson</div></div>`:''}
+      ${me.draft_round&&me.draft_slot?`<div class="dp-stat"><div class="dp-stat-val">R${me.draft_round} P${me.draft_slot}</div><div class="dp-stat-key">Placering</div></div>`:''}
+    </div></div>`:'';
+
+  // Scheme placeholder
+  const schemeHTML=`<div class="dp-section">
+    <div class="dp-sec-title">Scheme Tags – Fase 2–3</div>
+    <div class="dp-placeholder">
+      <div class="dp-ph-label">🔒 Beregnes fra Madden + NFLverse-data</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:4px">
+        ${['AIR_RAID_FIT','WEST_COAST_FIT','THREE_DOWN_BACK','SMASHMOUTH_FIT','SLOT_SPECIALIST']
+          .map(l=>`<span style="font-size:10px;font-weight:700;letter-spacing:.07em;padding:2px 8px;border-radius:4px;background:var(--surf-3);color:var(--bord-2);text-transform:uppercase">${l}</span>`).join('')}
+      </div>
+    </div>
+  </div>`;
+
+  document.getElementById('dp-body').innerHTML=`
+    <div class="dp-hero">
+      <div class="dp-photo-outer" style="--c:${clr}">
+        <div class="dp-photo-ring">
+          <div class="dp-photo-fallback">${initials}</div>
+          ${photoUrl?`<img class="dp-photo-img" src="${photoUrl}" alt="" onerror="this.remove()">`:''}
+        </div>
+      </div>
+      <div>
+        <div class="dp-name">${e(p.full_name)}</div>
+        <div class="dp-team-line">${teamLine}${college}</div>
+        ${dcLbl?`<div style="margin-top:6px;font-size:13px;color:var(--text-3)">Depth: <strong style="color:var(--text-2)">${dcLbl}</strong></div>`:''}
+      </div>
+    </div>
+    <div class="dp-section">
+      <div class="dp-sec-title">Spillerinfo</div>
+      <div class="dp-grid-2">${stats.map(s=>`<div class="dp-stat"><div class="dp-stat-val">${s.v}</div><div class="dp-stat-key">${s.k}</div></div>`).join('')}</div>
+      ${p.birth_date?`<div style="font-size:12px;color:var(--text-3);margin-top:10px">Fødselsdato: ${p.birth_date}</div>`:''}
+    </div>
+    ${injHTML}
+    ${draftHTML}
+    ${tagsHTML?`<div class="dp-section"><div class="dp-sec-title">Tags</div><div class="dp-tags">${tagsHTML}</div></div>`:''}
+    ${maddenHTML}
+    ${schemeHTML}`;
+
+  document.getElementById('detail-panel').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
 }
 
-// ── Event wiring ──────────────────────────────────────────────────────────────
-document.getElementById('search')
-  .addEventListener('input', applyFilters);
+function closeDetail() {
+  document.getElementById('detail-panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+}
 
-document.querySelectorAll('.pos-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    activePos = btn.dataset.pos;
-    document.querySelectorAll('.pos-btn').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    applyFilters();
-  });
-});
+/* ── Helpers ────────────────────────────────────────────── */
+function ovrColor(v) {
+  if (!v) return 'var(--text-3)';
+  if (v >= 90) return '#4ADE80';
+  if (v >= 80) return '#F97316';
+  if (v >= 70) return '#60A5FA';
+  return '#94A3B8';
+}
+function fmtH(h){if(!h)return'–';const n=parseInt(h,10);if(isNaN(n))return h;return`${Math.floor(n/12)}'${n%12}"`;}
+function e(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 
-document.getElementById('starters-only').addEventListener('change', e => {
-  startersOnly = e.target.checked; applyFilters();
-});
-document.getElementById('hide-ir').addEventListener('change', e => {
-  hideIR = e.target.checked; applyFilters();
-});
-document.getElementById('hide-fa').addEventListener('change', e => {
-  hideFA = e.target.checked; applyFilters();
-});
-document.getElementById('sort-by').addEventListener('change', e => {
-  sortBy = e.target.value; applyFilters();
-});
-document.getElementById('load-more-btn').addEventListener('click', () => {
-  displayCount += PAGE_SIZE;
+/* ── Events ─────────────────────────────────────────────── */
+document.getElementById('search').addEventListener('input',applyFilters);
+document.getElementById('dp-close-btn').addEventListener('click',closeDetail);
+document.getElementById('overlay').addEventListener('click',closeDetail);
+document.getElementById('tf-reset').addEventListener('click',()=>{activeTags.clear();applyFilters();});
+document.querySelectorAll('.pos-btn').forEach(btn=>btn.addEventListener('click',()=>{
+  activePos=btn.dataset.pos;
+  document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); activeTags.clear(); applyFilters();
+}));
+document.getElementById('tog-starters').addEventListener('change',e=>{togStarters=e.target.checked;applyFilters();});
+document.getElementById('tog-ir').addEventListener('change',e=>{togIR=e.target.checked;applyFilters();});
+document.getElementById('tog-fa').addEventListener('change',e=>{togFA=e.target.checked;applyFilters();});
+document.getElementById('sort-by').addEventListener('change',e=>{sortBy=e.target.value;applyFilters();});
+document.getElementById('btn-cards').addEventListener('click',()=>{
+  listView=false;
+  document.getElementById('btn-cards').classList.add('active');
+  document.getElementById('btn-list').classList.remove('active');
   render();
 });
+document.getElementById('btn-list').addEventListener('click',()=>{
+  listView=true;
+  document.getElementById('btn-list').classList.add('active');
+  document.getElementById('btn-cards').classList.remove('active');
+  render();
+});
+document.getElementById('lm-btn').addEventListener('click',()=>{displayCount+=PAGE_SIZE;render();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDetail();});
 
-// ── Go ────────────────────────────────────────────────────────────────────────
 init();
 </script>
 </body>
