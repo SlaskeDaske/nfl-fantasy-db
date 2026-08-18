@@ -56,12 +56,14 @@ body{background:var(--bg);color:var(--text);font-family:var(--font);font-size:15
 .tog-lbl input[type=checkbox]{width:14px;height:14px;accent-color:var(--orange);cursor:pointer}
 .sort-sel{background:var(--surf);border:1px solid var(--border);border-radius:6px;color:var(--text-2);font-family:var(--font);font-size:12px;padding:3px 8px;cursor:pointer;outline:none}
 
-/* TAG FILTER */
-.tf-outer{overflow-x:auto;scrollbar-width:none;border-bottom:1px solid var(--border)}
-.tf-outer::-webkit-scrollbar{display:none}
-.tf-row{max-width:1440px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.team-btn{padding:5px 14px;border-radius:999px;border:1px solid var(--orange);background:transparent;color:var(--orange);font-family:var(--font);font-size:12px;font-weight:600;letter-spacing:.05em;cursor:pointer;transition:all .15s;flex-shrink:0}
+.team-btn:hover,.team-btn.active{background:var(--orange);color:#fff}
+
+/* TAG FILTER - wrap after top 20 */
+.tf-outer{overflow:hidden;border-bottom:1px solid var(--border)}
+.tf-row{max-width:1440px;margin:0 auto;padding:8px 20px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
 .tf-lbl{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;flex-shrink:0;margin-right:2px}
-#tf-pills{display:inline-flex;gap:6px;flex-wrap:nowrap}
+#tf-pills{display:flex;gap:6px;flex-wrap:wrap;flex:1}
 .tf-pill{font-size:10px;font-weight:700;letter-spacing:.07em;padding:3px 9px;border-radius:4px;text-transform:uppercase;cursor:pointer;border:1.5px solid transparent;display:inline-flex;align-items:center;gap:4px;transition:all .12s;flex-shrink:0}
 .tf-pill:hover{filter:brightness(1.2)}
 .tf-pill.pos{background:var(--tg-bg);color:var(--tg-tx);border-color:var(--tg-bg)}
@@ -183,7 +185,7 @@ main{max-width:1440px;margin:0 auto;padding:20px}
 .dp-ph-label{font-size:11px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
 
 /* VIEW TOGGLE */
-.view-toggle{display:flex;gap:4px;margin-left:auto}
+.view-toggle{display:flex;gap:4px;margin-left:8px;flex-shrink:0}
 .view-btn{width:30px;height:30px;display:flex;align-items:center;justify-content:center;border:1px solid var(--border);border-radius:6px;background:transparent;cursor:pointer;color:var(--text-3);transition:all .15s}
 .view-btn.active{background:var(--surf-2);border-color:var(--bord-2);color:var(--text)}
 .view-btn:hover{border-color:var(--bord-2);color:var(--text)}
@@ -197,15 +199,59 @@ main{max-width:1440px;margin:0 auto;padding:20px}
 .pr-hs-fb{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:#fff;background:var(--c,#64748B)}
 .pr-hs img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center}
 .pr-pos{font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 5px;border-radius:3px;color:#fff;flex-shrink:0}
-.pr-info{flex:1;min-width:0}
+.pr-info{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
 .pr-name{font-size:14px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .pr-sub{font-size:11px;color:var(--text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pr-tags{display:flex;flex-wrap:wrap;gap:4px}
 .pr-ovr{font-size:15px;font-weight:700;width:36px;text-align:center;flex-shrink:0}
 .pr-depth{font-size:12px;font-weight:600;color:var(--text-2);width:46px;flex-shrink:0}
 .pr-depth.d1{color:#4ADE80}.pr-depth.d2{color:#60A5FA}
 .pr-meta{font-size:11px;color:var(--text-3);white-space:nowrap;flex-shrink:0;width:70px}
-.pr-tags{display:flex;gap:4px;flex-shrink:0}
-@media(max-width:680px){.pr-meta{display:none}.pr-depth{display:none}.pr-tags{display:none}}
+@media(max-width:680px){.pr-meta{display:none}.pr-depth{display:none}}
+
+/* TEAM GRID */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.team-tile{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:0;text-align:center;cursor:pointer;transition:all .18s;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.team-tile:hover{border-color:var(--bord-2);transform:translateY(-2px)}
+.t-color-bar{width:100%;height:4px;background:var(--tc,#64748B);flex-shrink:0}
+.t-tile-body{padding:12px 8px;display:flex;flex-direction:column;align-items:center;gap:3px;width:100%}
+.t-abbr{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.04em;line-height:1;color:var(--text)}
+.t-name{font-size:9px;color:var(--text-3);letter-spacing:.04em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;text-align:center}
+.t-meta{font-size:10px;color:var(--text-2)}
+
+/* TEAM DETAIL */
+.team-detail{display:block}
+.team-detail-hdr{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
+.back-btn{background:transparent;border:1px solid var(--border);border-radius:6px;color:var(--text-2);font-family:var(--font);font-size:12px;padding:6px 12px;cursor:pointer;transition:all .15s;flex-shrink:0}
+.back-btn:hover{border-color:var(--bord-2);color:var(--text)}
+.t-name-big{font-family:'Bebas Neue',sans-serif;font-size:30px;letter-spacing:.04em;line-height:1}
+.t-name-full{font-size:13px;color:var(--text-2);margin-left:2px}
+
+/* SYNERGY CARDS */
+.synergy-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:22px}
+.syn-card{background:var(--surf);border:1px solid var(--border);border-radius:10px;padding:14px}
+.syn-label{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.syn-val{font-size:18px;font-weight:700;color:var(--text);line-height:1}
+.syn-sub{font-size:11px;color:var(--text-3);margin-top:4px}
+.syn-locked .syn-val{color:var(--bord-2)}
+.syn-locked .syn-sub{color:var(--border)}
+.syn-bar-bg{height:4px;background:var(--border);border-radius:2px;margin-top:8px;overflow:hidden}
+.syn-bar{height:100%;border-radius:2px;background:var(--orange)}
+
+/* POSITION GROUP */
+.pos-group{margin-bottom:22px}
+.pos-group-hdr{font-size:11px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--text-3);padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.pos-group-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:3px;color:#fff}
+.pos-group-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:8px}
+
+@media(max-width:680px){.synergy-row{grid-template-columns:1fr 1fr}.team-grid{grid-template-columns:repeat(4,1fr)}}
+
+/* NFLverse stats grid */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:4px}
+.stat-cell{background:var(--surf-2);border-radius:6px;padding:8px 10px}
+.stat-val{font-size:15px;font-weight:600;color:var(--text)}
+.stat-key{font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px}
+.stat-cell.highlight .stat-val{color:var(--tg-tx)}
 
 /* MOBILE */
 @media(max-width:680px){
@@ -243,6 +289,8 @@ main{max-width:1440px;margin:0 auto;padding:20px}
       <button class="pos-btn" data-pos="TE">TE</button>
       <button class="pos-btn" data-pos="K">K</button>
       <button class="pos-btn" data-pos="DEF">DEF</button>
+      <div style="width:1px;height:20px;background:var(--border);margin:0 4px;flex-shrink:0"></div>
+      <button class="team-btn" id="btn-teams">🏈 Hold</button>
       <span class="flt-cnt" id="flt-cnt"></span>
     </div>
     <div class="tog-row">
@@ -270,12 +318,6 @@ main{max-width:1440px;margin:0 auto;padding:20px}
           </svg>
         </button>
       </div>
-        <option value="rank">Sorter: Rank</option>
-        <option value="ovr">Sorter: Madden OVR</option>
-        <option value="name">Sorter: Navn</option>
-        <option value="age">Sorter: Alder</option>
-        <option value="exp">Sorter: Erfaring</option>
-      </select>
     </div>
   </div>
   <div class="tf-outer">
@@ -320,7 +362,8 @@ const POSITIONS  = ['QB','RB','WR','TE','K','DEF'];
 const PAGE_SIZE  = 60;
 const CACHE_KEY  = 'nfl_db_v5';
 const CACHE_EXP  = 'nfl_db_exp_v5';
-const MADDEN_URL = 'https://slaskedaske.github.io/nfl-fantasy-db/madden.json';
+const MADDEN_URL   = 'https://slaskedaske.github.io/nfl-fantasy-db/madden.json';
+const NFLVERSE_URL = 'https://slaskedaske.github.io/nfl-fantasy-db/nflverse.json';
 const POS_COLOR  = {QB:'#E05252',RB:'#3B82F6',WR:'#22C55E',TE:'#F59E0B',K:'#A78BFA',DEF:'#64748B'};
 
 // Madden attributes to display per position
@@ -358,7 +401,7 @@ const TAG_DESC = {
   'PRIME AGE':'Inden for den statistisk stærkeste aldersgruppe for positionen',
   'AGE CONCERN':'Uden for prime-vinduet – forhøjet decline-risiko',
   'POWER BACK':'Tung RB (≥220 lbs) – stærk i short yardage og mål-linje-situationer',
-  'RECEIVING BACK':'Let RB (≤205 lbs) – designet som pass-catching weapon ud af backfield',
+  'RECEIVING BACK':'Madden catching ≥ 72 – reel pass-catching trussel ud af backfield, typisk brugt i screen plays og routes',
   'BIG BODY':'WR med elite-størrelse (≥6\'3" og ≥205 lbs) – svær at presse i end zone',
   'SLOT BUILD':'Kort WR (≤5\'10") – klassisk slot-profil, mange targets på korte ruter',
   'ELITE SIZE':'TE med ekstrem størrelse (≥6\'4" og ≥248 lbs) – dominant redzone-target',
@@ -378,7 +421,20 @@ const TAG_DESC = {
   'BACK CONCERN':'Rygskade – kronisk bekymring, særligt for RBs',
   'DNP':'Did Not Participate i træning – høj risiko for at misse kampen',
   'LIMITED PRACTICE':'Begrænset træningsdeltagelse – tjek fredags skaderapporten',
-  // Madden tags
+  'BREAKOUT':      'Steg 4+ PPR-point/kamp år-over-år – markant forbedring i rolle eller produktion',
+  'TRENDING UP':   'Steg 1.5–4 PPR-point/kamp år-over-år – positiv retning, stigende rolle',
+  'TRENDING DOWN': 'Faldt 1.5–4 PPR-point/kamp år-over-år – bekymrende retning, faldende rolle',
+  'DECLINE RISK':  'Faldt 4+ PPR-point/kamp år-over-år – markant produktionsfald',
+  // NFLverse tags
+  'WORKHORSE':    '55%+ carry share i 2024 – primær løber med garanteret volumen uge for uge',
+  'LEAD BACK':    '40-55% carry share i 2024 – klar RB1, robust volumen men deler brug',
+  'PASS CATCHER': '50+ receptions i 2024 – aktiv receiver ud af backfield, stærk i PPR',
+  'VOLUME RECV':  '120+ targets i 2024 – ekstremt høj target-volumen, lavt bust-potentiale',
+  'TARGET HOG':   '25%+ af holdets targets i 2024 – holdets primære target uden tvivl',
+  'AIR THREAT':   '20%+ air yards share – bruges primært dybt, høj TD-upside',
+  'ELITE WOPR':   'WOPR over 0.65 – kombineret elite target + air yards share',
+  'HIGH FLOOR':   '14+ PPR fantasy-point per kamp i 2024 – stabil ugentlig producer',
+  'ELITE FLOOR':  '18+ PPR fantasy-point per kamp i 2024 – ekstremt høj gulvværdi',
   'SPEED DEMON':'Madden 27 Speed ≥ 92 – top 5% hastighed i NFL, kan true enhver forsvarsspiller vertikalt',
   'ROUTE TECH':'Short Route Running ≥ 87 – elite ruteskarphed, skaber konsekvent separation',
   'SURE HANDS':'Catching ≥ 87 – pålidelig boldmodtager, sjældent drops selv i trafikken',
@@ -390,26 +446,56 @@ const TAG_DESC = {
   'DURABLE':'Madden injury rating ≥ 92 – historisk lav skadeprocent, konsekvent tilgængelig',
 };
 
+/* ── Team data ──────────────────────────────────────────── */
+const TEAM_COLORS = {
+  ARI:'#97233F',ATL:'#A71930',BAL:'#241773',BUF:'#00338D',CAR:'#0085CA',
+  CHI:'#0B162A',CIN:'#FB4F14',CLE:'#311D00',DAL:'#003594',DEN:'#FB4F14',
+  DET:'#0076B6',GB:'#203731',HOU:'#03202F',IND:'#002C5F',JAX:'#006778',
+  KC:'#E31837',LV:'#000000',LAC:'#0080C6',LA:'#003594',MIA:'#008E97',
+  MIN:'#4F2683',NE:'#002244',NO:'#9F8958',NYG:'#0B2265',NYJ:'#125740',
+  PHI:'#004C54',PIT:'#FFB612',SF:'#AA0000',SEA:'#002244',TB:'#D50A0A',
+  TEN:'#0C2340',WAS:'#5A1414',
+};
+const TEAM_NAMES = {
+  ARI:'Arizona Cardinals',ATL:'Atlanta Falcons',BAL:'Baltimore Ravens',
+  BUF:'Buffalo Bills',CAR:'Carolina Panthers',CHI:'Chicago Bears',
+  CIN:'Cincinnati Bengals',CLE:'Cleveland Browns',DAL:'Dallas Cowboys',
+  DEN:'Denver Broncos',DET:'Detroit Lions',GB:'Green Bay Packers',
+  HOU:'Houston Texans',IND:'Indianapolis Colts',JAX:'Jacksonville Jaguars',
+  KC:'Kansas City Chiefs',LV:'Las Vegas Raiders',LAC:'Los Angeles Chargers',
+  LA:'Los Angeles Rams',MIA:'Miami Dolphins',MIN:'Minnesota Vikings',
+  NE:'New England Patriots',NO:'New Orleans Saints',NYG:'New York Giants',
+  NYJ:'New York Jets',PHI:'Philadelphia Eagles',PIT:'Pittsburgh Steelers',
+  SF:'San Francisco 49ers',SEA:'Seattle Seahawks',TB:'Tampa Bay Buccaneers',
+  TEN:'Tennessee Titans',WAS:'Washington Commanders',
+};
+const POS_ORDER_TEAM = ['QB','RB','WR','TE','K'];
+
 /* ── State ──────────────────────────────────────────────── */
 let allPlayers=[], filtered=[], displayCount=PAGE_SIZE;
 let activePos='ALL', sortBy='rank';
 let togStarters=false, togIR=true, togFA=false;
 let activeTags=new Set();
 let maddenData={};
+let nflverseData={players:{},teams:{}};
 let listView=false;
+let teamView=null; // null | 'teams' | 'KC' etc.
 
 /* ── Boot ───────────────────────────────────────────────── */
 async function init() {
   try {
-    const [sleeperRaw, maddenRaw] = await Promise.all([
+    const [sleeperRaw, maddenRaw, nflRaw] = await Promise.all([
       loadSleeper(),
       loadMadden(),
+      loadNflverse(),
     ]);
-    maddenData = maddenRaw;
-    const mCount = Object.keys(maddenData).length;
+    maddenData    = maddenRaw;
+    nflverseData  = nflRaw;
+    const mCount  = Object.keys(maddenData).length;
+    const nCount  = Object.keys(nflRaw.players||{}).length;
     allPlayers = processPlayers(sleeperRaw);
     document.getElementById('cnt').textContent =
-      `${allPlayers.length.toLocaleString('da')} spillere · Madden 27 (${mCount})`;
+      `${allPlayers.length.toLocaleString('da')} spillere · M27 (${mCount}) · NFLverse (${nCount})`;
     applyFilters();
   } catch(err) {
     document.getElementById('loading').innerHTML =
@@ -446,7 +532,16 @@ async function loadMadden() {
   }
 }
 
-/* ── Process players ────────────────────────────────────── */
+async function loadNflverse() {
+  try {
+    const r = await fetch(NFLVERSE_URL);
+    if (!r.ok) return {players:{},teams:{}};
+    return await r.json();
+  } catch(e) {
+    console.warn('NFLverse data ikke tilgængelig:', e);
+    return {players:{},teams:{}};
+  }
+}
 function processPlayers(raw) {
   return Object.values(raw)
     .filter(p => {
@@ -517,12 +612,9 @@ function buildTags(p) {
   if (stage==='PRIME')   t.push({l:'PRIME AGE',  c:'pos'});
   if (stage==='CONCERN') t.push({l:'AGE CONCERN',c:'neg'});
 
-  // Physical (only if no Madden data)
+  // Physical (only if no Madden data) – kun POWER BACK er rimelig fysisk inferens
   if (!m.speed) {
-    if (pos==='RB'&&wt>0) {
-      if      (wt>=220) t.push({l:'POWER BACK',    c:'info'});
-      else if (wt<=205) t.push({l:'RECEIVING BACK',c:'info'});
-    }
+    if (pos==='RB'&&wt>=220)          t.push({l:'POWER BACK',  c:'info'});
     if (pos==='WR'&&ht>0&&wt>0) {
       if      (ht>=75&&wt>=205) t.push({l:'BIG BODY',  c:'info'});
       else if (ht<=70)          t.push({l:'SLOT BUILD', c:'info'});
@@ -540,10 +632,38 @@ function buildTags(p) {
                                                         t.push({l:'ACCURATE QB',  c:'pos'});
     if (pos==='RB' && ((m.trucking||0)>=85||(m.break_tackle||0)>=85))
                                                         t.push({l:'POWER RUNNER', c:'info'});
+    if (pos==='RB' && (m.catching||0)>=72)              t.push({l:'RECEIVING BACK',c:'info'});
     if (pos==='RB' && ((m.juke_move||0)>=88||(m.cod||0)>=88))
                                                         t.push({l:'EVASIVE',      c:'info'});
     if (m.injury != null && m.injury < 75)              t.push({l:'INJURY PRONE', c:'neg'});
     if (m.injury != null && m.injury >= 92)             t.push({l:'DURABLE',      c:'pos'});
+  }
+
+  // ── NFLverse 2024 stats tags ─────────────────────────────
+  const n = (nflverseData.players||{})[p.player_id] || {};
+  if (n.games) {
+    if (pos==='RB') {
+      if ((n.carry_share||0) >= 0.55)      t.push({l:'WORKHORSE',    c:'pos'});
+      else if ((n.carry_share||0) >= 0.40) t.push({l:'LEAD BACK',   c:'info'});
+      if ((n.receptions||0) >= 50)         t.push({l:'PASS CATCHER', c:'info'});
+    }
+    if (pos==='WR'||pos==='TE') {
+      if ((n.targets||0) >= 120)           t.push({l:'VOLUME RECV',  c:'pos'});
+      if ((n.target_share||0) >= 0.25)     t.push({l:'TARGET HOG',   c:'pos'});
+      if ((n.air_yards_share||0) >= 0.20)  t.push({l:'AIR THREAT',   c:'info'});
+      if ((n.wopr||0) >= 0.65)             t.push({l:'ELITE WOPR',   c:'pos'});
+    }
+    if ((n.fpts_per_game||0) >= 18)        t.push({l:'ELITE FLOOR',  c:'pos'});
+    else if ((n.fpts_per_game||0) >= 14)   t.push({l:'HIGH FLOOR',   c:'pos'});
+
+    // Trend tags (år-over-år)
+    const trend = n.trend;
+    if (trend) {
+      if      (trend.dir === 'breakout') t.push({l:'BREAKOUT',      c:'pos'});
+      else if (trend.dir === 'up')       t.push({l:'TRENDING UP',   c:'pos'});
+      else if (trend.dir === 'decline')  t.push({l:'DECLINE RISK',  c:'neg'});
+      else if (trend.dir === 'down')     t.push({l:'TRENDING DOWN', c:'neg'});
+    }
   }
 
   // Team/injury
@@ -605,7 +725,7 @@ function updateTagPills(base) {
   const entries=Object.entries(counts).sort((a,b)=>{
     const aOn=activeTags.has(a[0])?1:0,bOn=activeTags.has(b[0])?1:0;
     if(aOn!==bOn)return bOn-aOn; return b[1].n-a[1].n;
-  });
+  }).slice(0,25); // Max 25 tag-pills
   const pRow=document.getElementById('tf-pills');
   pRow.innerHTML=entries.map(([lbl,{n,c}])=>{
     const on=activeTags.has(lbl);
@@ -619,8 +739,11 @@ function updateTagPills(base) {
   document.getElementById('tf-reset').style.display=activeTags.size?'inline-block':'none';
 }
 
-/* ── Render ─────────────────────────────────────────────── */
+/* ── Render dispatcher ──────────────────────────────────── */
 function render() {
+  if (teamView === 'teams') { renderTeamGrid(); return; }
+  if (teamView)             { renderTeamDetail(teamView); return; }
+
   const grid=document.getElementById('player-grid');
   const empty=document.getElementById('empty');
   const lmw=document.getElementById('lm-wrap');
@@ -640,6 +763,183 @@ function render() {
   grid.querySelectorAll('.player-card,.player-row').forEach((el,i)=>el.addEventListener('click',()=>openDetail(filtered[i])));
 }
 
+/* ── Team grid ──────────────────────────────────────────── */
+function renderTeamGrid() {
+  const grid=document.getElementById('player-grid');
+  document.getElementById('loading').style.display='none';
+  document.getElementById('empty').style.display='none';
+  document.getElementById('lm-wrap').style.display='none';
+  document.getElementById('flt-cnt').textContent='32 hold';
+
+  // Group players by team
+  const teamStats={};
+  allPlayers.filter(p=>p.team).forEach(p=>{
+    if(!teamStats[p.team]) teamStats[p.team]={count:0,topOvr:0};
+    if(['QB','RB','WR','TE'].includes(p.position)) teamStats[p.team].count++;
+    const ovr=(maddenData[p.player_id]||{}).overall||0;
+    if(ovr>teamStats[p.team].topOvr) teamStats[p.team].topOvr=ovr;
+  });
+
+  const teams=Object.keys(TEAM_NAMES).sort();
+  grid.className='team-grid'; grid.style.display='grid';
+  grid.innerHTML=teams.map(abbr=>{
+    const clr=TEAM_COLORS[abbr]||'#64748B';
+    const nm=TEAM_NAMES[abbr]||abbr;
+    const city=nm.split(' ').slice(0,-1).join(' ');
+    const st=teamStats[abbr]||{count:0,topOvr:0};
+    const ovrTxt=st.topOvr?`Top OVR: <strong style="color:${ovrColor(st.topOvr)}">${st.topOvr}</strong>`:'–';
+    return `<div class="team-tile" data-team="${abbr}" style="--tc:${clr}">
+      <div class="t-color-bar"></div>
+      <div class="t-tile-body">
+        <div class="t-abbr">${abbr}</div>
+        <div class="t-name">${city}</div>
+        <div class="t-meta">${ovrTxt}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.team-tile').forEach(tile=>
+    tile.addEventListener('click',()=>{teamView=tile.dataset.team;render();}));
+}
+
+/* ── Team detail ────────────────────────────────────────── */
+function renderTeamDetail(team) {
+  const grid=document.getElementById('player-grid');
+  document.getElementById('lm-wrap').style.display='none';
+  document.getElementById('empty').style.display='none';
+  document.getElementById('flt-cnt').textContent=TEAM_NAMES[team]||team;
+
+  const clr=TEAM_COLORS[team]||'#64748B';
+  const fullName=TEAM_NAMES[team]||team;
+  const abbr3=fullName.split(' ').slice(-1)[0]; // last word = team nickname
+
+  const teamPlayers=allPlayers.filter(p=>p.team===team);
+
+  // Compute team stats from available data
+  const ovrs=teamPlayers.map(p=>(maddenData[p.player_id]||{}).overall).filter(Boolean);
+  const avgOvr=ovrs.length?Math.round(ovrs.reduce((a,b)=>a+b,0)/ovrs.length):null;
+  const topOvr=ovrs.length?Math.max(...ovrs):null;
+  const eliteCount=teamPlayers.filter(p=>{
+    const m=maddenData[p.player_id]; return m&&m.overall>=90&&['QB','RB','WR','TE'].includes(p.position);
+  }).length;
+
+  // NFLverse team data
+  const nt = (nflverseData.teams||{})[team] || {};
+  const passRate = nt.pass_rate;
+  const passLabel = passRate
+    ? passRate < 0.43 ? 'Run-first' : passRate < 0.48 ? 'Run-lean'
+    : passRate < 0.52 ? 'Balanced'  : passRate < 0.57 ? 'Pass-lean' : 'Pass-first'
+    : null;
+  const passColor = passRate
+    ? passRate < 0.46 ? '#4ADE80' : passRate < 0.54 ? '#F97316' : '#60A5FA'
+    : null;
+
+  // Synergy cards: first 3 are Madden-based (real data), next 3 NFLverse
+  const synHTML=`<div class="synergy-row">
+    <div class="syn-card">
+      <div class="syn-label">Bedste spiller OVR</div>
+      <div class="syn-val" style="color:${topOvr?ovrColor(topOvr):'var(--text-3)'}">${topOvr||'–'}</div>
+      <div class="syn-sub">Madden 27</div>
+      ${topOvr?`<div class="syn-bar-bg"><div class="syn-bar" style="width:${topOvr}%;background:${ovrColor(topOvr)}"></div></div>`:''}
+    </div>
+    <div class="syn-card">
+      <div class="syn-label">Gns. OVR (skill pos.)</div>
+      <div class="syn-val" style="color:${avgOvr?ovrColor(avgOvr):'var(--text-3)'}">${avgOvr||'–'}</div>
+      <div class="syn-sub">Madden 27</div>
+      ${avgOvr?`<div class="syn-bar-bg"><div class="syn-bar" style="width:${avgOvr}%;background:${ovrColor(avgOvr)}"></div></div>`:''}
+    </div>
+    <div class="syn-card">
+      <div class="syn-label">Elite-spillere (90+)</div>
+      <div class="syn-val">${eliteCount}</div>
+      <div class="syn-sub">QB · RB · WR · TE</div>
+    </div>
+  </div>
+  <div class="synergy-row">
+    <div class="syn-card${passRate?'':' syn-locked'}">
+      <div class="syn-label">HC Spilstil</div>
+      <div class="syn-val" style="color:${passColor||'var(--bord-2)'}">${passLabel||'–'}</div>
+      <div class="syn-sub">${passRate?`Pass rate: ${(passRate*100).toFixed(1)}% · 2024`:'🔒 NFLverse-data'}</div>
+      ${passRate?`<div class="syn-bar-bg"><div class="syn-bar" style="width:${(passRate*100).toFixed(0)}%;background:${passColor}"></div></div>`:''}
+    </div>
+    <div class="syn-card${passRate?'':' syn-locked'}">
+      <div class="syn-label">Pass / Run balance</div>
+      <div class="syn-val" style="color:${passColor||'var(--bord-2)'}">${passRate?`${(passRate*100).toFixed(1)}% pass`:'–'}</div>
+      <div class="syn-sub">${nt.total_targets?`${nt.total_targets} targets · ${nt.total_carries} carries`:'🔒 NFLverse-data'}</div>
+    </div>
+    <div class="syn-card syn-locked">
+      <div class="syn-label">O-Line Styrke</div>
+      <div class="syn-val">–</div>
+      <div class="syn-sub">🔒 Kræver PFF-data</div>
+    </div>
+  </div>`;
+
+  // Roster by position
+  const rosterHTML=POS_ORDER_TEAM.map(pos=>{
+    const players=teamPlayers
+      .filter(p=>p.position===pos)
+      .sort((a,b)=>(a.depth_chart_order||99)-(b.depth_chart_order||99));
+    if(!players.length) return '';
+    return `<div class="pos-group">
+      <div class="pos-group-hdr">
+        <span class="pos-group-badge" style="background:${POS_COLOR[pos]||'#64748B'}">${pos}</span>
+        <span>${players.length} spiller${players.length!==1?'e':''}</span>
+      </div>
+      <div class="pos-group-grid">${players.map(p=>teamPlayerCard(p)).join('')}</div>
+    </div>`;
+  }).join('');
+
+  grid.className='team-detail'; grid.style.display='block';
+  grid.innerHTML=`
+    <div class="team-detail-hdr">
+      <button class="back-btn" id="back-btn">← Alle hold</button>
+      <div>
+        <div class="t-name-big" style="color:${clr}">${abbr3.toUpperCase()}</div>
+        <div class="t-name-full">${fullName}</div>
+      </div>
+    </div>
+    ${synHTML}
+    ${rosterHTML}`;
+
+  document.getElementById('back-btn').addEventListener('click',()=>{teamView='teams';render();});
+  grid.querySelectorAll('.team-player-card').forEach(el=>{
+    const p=allPlayers.find(pp=>pp.player_id===el.dataset.pid);
+    if(p) el.addEventListener('click',()=>openDetail(p));
+  });
+}
+
+function teamPlayerCard(p) {
+  const pos=p.position||'–', clr=POS_COLOR[pos]||'#64748B';
+  const initials=(p.full_name||'').split(' ').map(n=>n[0]||'').join('').slice(0,2).toUpperCase();
+  const photoUrl=p.player_id?`https://sleepercdn.com/content/nfl/players/thumb/${p.player_id}.jpg`:'';
+  const dc=p.depth_chart_order;
+  const dcCls=dc===1?'d1':dc===2?'d2':'';
+  const dcLbl=dc?`${p.depth_chart_position||pos}${dc}`:'';
+  const m=maddenData[p.player_id]||{};
+  const ovr=m.overall;
+  const ovrCol=ovr?ovrColor(ovr):'var(--text-3)';
+  const topTags=(p.tags||[]).slice(0,2).map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
+  return `<div class="team-player-card player-card" data-pid="${p.player_id||''}">
+    <div class="card-top">
+      <div class="hs-wrap" style="--c:${clr}">
+        <div class="hs-inner">
+          <div class="hs-fallback">${initials}</div>
+          ${photoUrl?`<img class="hs-img" src="${photoUrl}" alt="" loading="lazy" onerror="this.remove()">`:''}
+        </div>
+        <span class="hs-badge">${pos}</span>
+      </div>
+      <div class="card-info">
+        <div class="player-name">${e(p.full_name)}</div>
+        <div class="player-sub">
+          ${dcLbl?`<span class="depth-val ${dcCls}" style="font-size:12px">${dcLbl}</span>`:''}
+          ${p.college?` · ${e(p.college)}`:''}
+        </div>
+      </div>
+      ${ovr?`<span class="card-ovr" style="background:${ovrCol}">${ovr}</span>`:''}
+    </div>
+    ${topTags?`<div class="tags">${topTags}</div>`:''}
+  </div>`;
+}
+
 /* ── List row HTML ──────────────────────────────────────── */
 function rowHTML(p) {
   const pos=p.position||'–', clr=POS_COLOR[pos]||'#64748B';
@@ -653,7 +953,7 @@ function rowHTML(p) {
   const m=maddenData[p.player_id];
   const ovr=m&&m.overall;
   const ovrCol=ovr?ovrColor(ovr):'var(--text-3)';
-  const topTags=(p.tags||[]).slice(0,3).map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
+  const topTags=(p.tags||[]).slice(0,5).map(t=>`<span class="tag ${t.c}">${t.l}</span>`).join('');
   const ageMeta=p._age?`${p._age}år`:'';
   const expMeta=p.years_exp!=null?`${p.years_exp}s`:'';
   return `
@@ -668,11 +968,11 @@ function rowHTML(p) {
   <div class="pr-info">
     <div class="pr-name">${e(p.full_name)}</div>
     <div class="pr-sub">${teamStr}${college}</div>
+    ${topTags?`<div class="pr-tags">${topTags}</div>`:''}
   </div>
   <div class="pr-ovr" style="color:${ovrCol}">${ovr||'–'}</div>
   <div class="pr-depth ${dcCls}">${dcLbl}</div>
   <div class="pr-meta">${ageMeta}${ageMeta&&expMeta?' · ':''}${expMeta}</div>
-  <div class="pr-tags">${topTags}</div>
 </div>`;}
 
 /* ── Card HTML ──────────────────────────────────────────── */
@@ -745,6 +1045,88 @@ function openDetail(p) {
   if(p.injury_start_date)      injLines.push(`<div class="dp-inj-row"><span class="dp-inj-key">Siden</span><span class="dp-inj-val">${e(p.injury_start_date)}</span></div>`);
   const injHTML=injLines.length?`<div class="dp-section dp-injury">
     <div class="dp-sec-title" style="color:var(--tr-tx)">⚑ Skadestatus</div>${injLines.join('')}</div>`:'';
+
+  // NFLverse 2024 stats + karrieregraf
+  const nfl = (nflverseData.players||{})[p.player_id] || {};
+  const hasNfl = !!nfl.games;
+  let nflHTML = '';
+  if (hasNfl) {
+    const pct = v => v != null ? `${(v*100).toFixed(1)}%` : '–';
+    const d1  = v => v != null ? v.toFixed(1) : '–';
+    const d3  = v => v != null ? v.toFixed(3) : '–';
+    const int_= v => v != null ? v.toLocaleString('da') : '–';
+    let rows=[];
+    if (pos==='QB') rows=[
+      ['Forsøg',int_(nfl.attempts),''],['Completions',int_(nfl.completions),''],
+      ['Comp%',d1(nfl.completion_pct)+'%',''],['Pass Yards',int_(nfl.pass_yards),'highlight'],
+      ['Pass TDs',int_(nfl.pass_tds),'highlight'],['INTs',int_(nfl.interceptions),''],
+      ['Sacks',int_(nfl.sacks),''],['Fantasy PPR',d1(nfl.fpts_ppr),''],
+      ['Per kamp',d1(nfl.fpts_per_game),'highlight'],['Kampe',nfl.games,''],
+    ];
+    else if (pos==='RB') rows=[
+      ['Carries',int_(nfl.carries),''],['Carry Share',pct(nfl.carry_share),'highlight'],
+      ['Rush Yards',int_(nfl.rush_yards),'highlight'],['YPC',d1(nfl.ypc),''],
+      ['Rush TDs',int_(nfl.rush_tds),''],['Rush Yds/kamp',d1(nfl.rush_yards_per_game),''],
+      ['Targets',int_(nfl.targets),''],['Receptions',int_(nfl.receptions),''],
+      ['Rec Yards',int_(nfl.rec_yards),''],['Fantasy PPR',d1(nfl.fpts_ppr),''],
+      ['Per kamp',d1(nfl.fpts_per_game),'highlight'],['Kampe',nfl.games,''],
+    ];
+    else rows=[
+      ['Targets',int_(nfl.targets),''],['Target Share',pct(nfl.target_share),'highlight'],
+      ['Receptions',int_(nfl.receptions),''],['Air Yds Share',pct(nfl.air_yards_share),''],
+      ['Rec Yards',int_(nfl.rec_yards),'highlight'],['WOPR',d3(nfl.wopr),'highlight'],
+      ['Rec TDs',int_(nfl.rec_tds),''],['Yds/Reception',d1(nfl.yards_per_rec),''],
+      ['Yds/kamp',d1(nfl.rec_yards_per_game),''],['Rec/kamp',d1(nfl.rec_per_game),''],
+      ['Fantasy PPR',d1(nfl.fpts_ppr),''],['Per kamp',d1(nfl.fpts_per_game),'highlight'],
+    ];
+
+    // Karrieregraf (sparkline)
+    const hist = nfl.hist || {};
+    const allYears = [...Object.keys(hist).map(Number).sort(), (nflverseData.season||2024)];
+    const allFpts  = allYears.map(y => {
+      if (y === (nflverseData.season||2024)) return nfl.fpts_per_game;
+      return (hist[String(y)] || {}).fpts_per_game;
+    }).filter(v => v != null);
+
+    let sparkHTML = '';
+    if (allYears.length >= 2 && allFpts.length >= 2) {
+      const maxF = Math.max(...allFpts, 1);
+      const W=340, H=60, pad=8;
+      const pts = allFpts.map((v,i)=>{
+        const x = pad + (i/(allFpts.length-1))*(W-pad*2);
+        const y = H - pad - (v/maxF)*(H-pad*2);
+        return `${x},${y}`;
+      }).join(' ');
+      const trend = nfl.trend;
+      const tCol = trend ? (trend.dir==='breakout'||trend.dir==='up'?'#4ADE80':trend.dir==='decline'||trend.dir==='down'?'#F87171':'#7E9BB5') : '#7E9BB5';
+      const tArrow = trend ? (trend.dir==='breakout'||trend.dir==='up'?' ↑':trend.dir==='decline'||trend.dir==='down'?' ↓':' →') : '';
+      const tLabel = trend ? `${trend.fpts_delta > 0?'+':''}${trend.fpts_delta} pts/kamp${tArrow}` : '';
+
+      sparkHTML = `<div style="margin-top:10px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+          <span style="font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em">Karriere PPR/kamp</span>
+          ${tLabel?`<span style="font-size:11px;font-weight:600;color:${tCol}">${tLabel}</span>`:''}
+        </div>
+        <svg width="100%" viewBox="0 0 ${W} ${H}" style="overflow:visible">
+          <polyline points="${pts}" fill="none" stroke="${tCol}" stroke-width="2" stroke-linejoin="round"/>
+          ${allFpts.map((v,i)=>{
+            const x=pad+(i/(allFpts.length-1))*(W-pad*2);
+            const y=H-pad-(v/maxF)*(H-pad*2);
+            const yr=allYears[i];
+            return `<circle cx="${x}" cy="${y}" r="4" fill="${i===allFpts.length-1?tCol:'var(--surf-3)'}" stroke="${tCol}" stroke-width="1.5"/>
+            <text x="${x}" y="${H}" text-anchor="middle" fill="var(--text-3)" font-size="9">${yr}</text>
+            <text x="${x}" y="${y-8}" text-anchor="middle" fill="${tCol}" font-size="9" font-weight="600">${v}</text>`;
+          }).join('')}
+        </svg>
+      </div>`;
+    }
+
+    nflHTML=`<div class="dp-section">
+      <div class="dp-sec-title">Sæson Stats · ${nfl.team} · ${nfl.games} kampe (${nflverseData.season||2024})</div>
+      <div class="stats-grid">${rows.map(([k,v,cls])=>`<div class="stat-cell${cls?' '+cls:''}"><div class="stat-val">${v}</div><div class="stat-key">${k}</div></div>`).join('')}</div>
+      ${sparkHTML}
+    </div>`;
+  }
 
   // Madden section
   const m = maddenData[p.player_id];
@@ -824,6 +1206,7 @@ function openDetail(p) {
     ${injHTML}
     ${draftHTML}
     ${tagsHTML?`<div class="dp-section"><div class="dp-sec-title">Tags</div><div class="dp-tags">${tagsHTML}</div></div>`:''}
+    ${nflHTML}
     ${maddenHTML}
     ${schemeHTML}`;
 
@@ -852,10 +1235,18 @@ document.getElementById('search').addEventListener('input',applyFilters);
 document.getElementById('dp-close-btn').addEventListener('click',closeDetail);
 document.getElementById('overlay').addEventListener('click',closeDetail);
 document.getElementById('tf-reset').addEventListener('click',()=>{activeTags.clear();applyFilters();});
+
+document.getElementById('btn-teams').addEventListener('click',()=>{
+  document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('btn-teams').classList.add('active');
+  teamView='teams'; render();
+});
+
 document.querySelectorAll('.pos-btn').forEach(btn=>btn.addEventListener('click',()=>{
   activePos=btn.dataset.pos;
   document.querySelectorAll('.pos-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active'); activeTags.clear(); applyFilters();
+  btn.classList.add('active');
+  teamView=null; activeTags.clear(); applyFilters();
 }));
 document.getElementById('tog-starters').addEventListener('change',e=>{togStarters=e.target.checked;applyFilters();});
 document.getElementById('tog-ir').addEventListener('change',e=>{togIR=e.target.checked;applyFilters();});
